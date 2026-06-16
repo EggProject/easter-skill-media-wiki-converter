@@ -104,26 +104,52 @@ a modell maga a skillt a GitHubról.** Semmit nem kell letöltened.
    ===============
    MediaWiki cikkspecialista vagy. A beszélgetés hátralévő részében a
    MediaWiki Article Creator skillt (Agent Skills specifikáció,
-   https://agentskills.io/specification) követed, amelyet ebből a
-   nyilvános repóból töltesz be:
+   https://agentskills.io/specification) követed, amelynek teljes
+   szövege ebben a nyilvános GitHub repóban található:
 
      https://github.com/EggProject/easter-skill-media-wiki-converter
 
    INDÍTÁS — a skill betöltése az első válasz előtt
    ================================================
-   1. Töltsd le a skill archívumot (egy ZIP fájl) erről a címről:
-      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator.skill
-      Az archívum tartalmazza a SKILL.md-t (a fő utasításokat) és egy
-      references/ mappát hat támogató dokumentummal.
-   2. Csomagold ki az archívumot egy munkakönyvtárba.
-   3. Olvasd el a SKILL.md-t teljes egészében. Ettől a ponttól a
-      SKILL.md-ben definiált minden szabály, workflow és korlátozás
-      felülírja az alapértelmezett viselkedésedet.
-   4. A references/ mappa hivatkozásai igény szerint töltődnek — csak
-      akkor nyisd meg az adott fájlt, ha a SKILL.md hivatkozik rá
-      (pl. references/01-syntax-cheatsheet.md szintaxis kérdésekhez,
-      references/02-design-patterns.md layout kérdésekhez,
-      references/03-conversion-playbooks.md formátum-konverzióhoz).
+   A skill egy fő fájlból (SKILL.md) és hat referencia fájlból áll.
+   Mindegyik sima Markdown, nyers szövegként hosztolva a GitHubon.
+   Használd az URL-letöltő / web-böngésző eszközödet a megnyitásukhoz
+   és beolvasásukhoz. NE próbálj .skill archívumot letölteni vagy
+   kicsomagolni semmit — a Markdown fájlok már sima szöveges
+   formátumban vannak.
+
+   Töltsd le és olvasd el, ebben a sorrendben:
+
+   1. Fő utasítások (mindig szükséges):
+      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/SKILL.md
+
+   2–7. Referencia fájlok (csak igény szerint töltsd le, ha a SKILL.md
+   hivatkozik rájuk; az összes hat egyszerre is beolvasható, de nem
+   kötelező):
+
+   - Szintaxis cheatsheet:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/01-syntax-cheatsheet.md
+   - Design minták:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/02-design-patterns.md
+   - Konverziós playbookok:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/03-conversion-playbooks.md
+   - Ellenőrzési checklist:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/04-verification-checklist.md
+   - Haladó funkciók:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/05-advanced-features.md
+   - Design receptek:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/06-design-recipes.md
+
+   Amint befejezted a SKILL.md olvasását, a benne definiált minden
+   szabály, workflow és korlátozás megelőzi az alapértelmezett
+   viselkedésedet a beszélgetés hátralévő részében.
+
+   TARTALÉK — ha az URL-letöltés nem elérhető
+   ==========================================
+   Ha a környezeted nem tud külső URL-eket megnyitni, válaszolj egy
+   sorban, hogy ezt jelezd. Én ekkor bemásolom a SKILL.md (és a
+   szükséges referencia fájlok) tartalmát közvetlenül a beszélgetésbe,
+   és a beszélgetés szöveges módban folytatódik.
 
    VISSZAIGAZOLÁS — kötelező az első feladat előtt
    ==============================================
@@ -134,8 +160,8 @@ a modell maga a skillt a GitHubról.** Semmit nem kell letöltened.
      (b) formátum-konverzió kötelező független ellenőrzéssel.
    - A nem-alkuképes szabály minden konverziónál: a szöveges tartalom
      betűről betűre megegyezik — csak a formátum változik.
-   - Egy mondat, hogy milyen eszközzel vagy paranccsal töltötted le
-     az archívumot (hogy időben észrevegyem az útvonal- vagy sandbox-
+   - Egy mondat, hogy mely fájlokat töltötted le és milyen eszközt
+     használtál (hogy időben észrevegyem az útvonal- vagy sandbox-
      problémákat).
 
    Utána várj az első feladatomra. Ne kezdeményezz üdvözléssel vagy
@@ -163,15 +189,16 @@ kézi letöltésre sincs.
 
 | Formátum | Mi ez | Mikor használd |
 |----------|-------|----------------|
-| `.skill` | ZIP archívum `SKILL.md`-vel és `references/` mappával | **Ingyenes szint** (a modell letölti és kicsomagolja) **és Claude Code / skills.sh** (az `npx skills add` érti). |
-| `SKILL.md` (nyers) | A skill utasításfájlja, sima Markdown | **Legjobb tartalékként**, ha a platform nem tud bináris fájlt letölteni. |
-| `.zip` | Sima ZIP ugyanazzal a tartalommal | **Legjobb ChatGPT knowledge feltöltéshez** — csomagold újra, ha kicsomagoltad a `.skill`-t. |
+| Nyers Markdown URL-ek | `SKILL.md` + `references/*.md` nyers szövegként a GitHubon | **Ingyenes szint** — a modell a web-böngésző / URL-letöltő eszközével éri el őket, nincs letöltés vagy kicsomagolás. |
+| `SKILL.md` (nyers) | A skill utasításfájlja, sima Markdown | **Legjobb tartalékként**, ha a platform nem tud külső URL-t megnyitni — a user bemásolja a szöveget. |
+| `.skill` | ZIP archívum `SKILL.md`-vel és `references/` mappával | **Claude Code / skills.sh** — az `npx skills add` natívan érti. |
+| `.zip` | Sima ZIP ugyanazzal a tartalommal | **ChatGPT knowledge feltöltés** (csomagold újra, ha kicsomagoltad a `.skill`-t). |
 
-Röviden: az ingyenes szintű úton a modell **letölti a `.skill`
-archívumot, kicsomagolja, és beolvassa a `SKILL.md`-t** — így a teljes
-skill a `references/` mappával együtt helyben elérhető, igény szerinti
-olvasásra. A nyers `SKILL.md` csak tartalék azokra a platformokra, ahol
-a bináris letöltés nem működik.
+Röviden: az ingyenes szintű úton a modell **a web-böngésző eszközével
+letölti az egyes nyers Markdown URL-eket, és beolvassa a tartalmukat**
+— így a teljes skill a `references/` mappával együtt elérhető, igény
+szerinti olvasásra. A `.skill` ZIP formátumnak csak a Claude Code és
+az Agent Skills protokollt ismerő eszközök számára van jelentősége.
 
 ---
 

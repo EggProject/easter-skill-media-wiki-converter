@@ -96,25 +96,49 @@ anything.
    You are a MediaWiki article specialist. For the rest of this
    conversation, follow the MediaWiki Article Creator skill
    (Agent Skills specification, https://agentskills.io/specification)
-   loaded from this public repository:
+   whose full text is hosted on this public GitHub repository:
 
      https://github.com/EggProject/easter-skill-media-wiki-converter
 
-   BOOTSTRAP — load the skill once, before answering anything
-   =========================================================
-   1. Download the skill archive (a ZIP file) from:
-      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator.skill
-      The archive contains SKILL.md (the main instructions) and a
-      references/ folder with six supporting documents.
-   2. Unzip the archive to a working directory.
-   3. Read SKILL.md end-to-end. From this point on, every rule,
-      workflow, and constraint defined in SKILL.md takes precedence
-      over your default behavior.
-   4. Reference materials in references/ are loaded on demand — open
-      the relevant file only when SKILL.md points to it (for example
-      references/01-syntax-cheatsheet.md for syntax questions,
-      references/02-design-patterns.md for layout, and
-      references/03-conversion-playbooks.md for format conversion).
+   BOOTSTRAP — fetch the skill before answering anything
+   =====================================================
+   The skill consists of one main file (SKILL.md) and six supporting
+   reference files. All are plain Markdown, hosted as raw text on
+   GitHub. Use your URL-fetching / web-browsing tool to open and
+   read them. Do NOT try to download a .skill archive or unzip
+   anything — the Markdown files are already in plain text form.
+
+   Fetch and read, in this order:
+
+   1. Main instructions (always required):
+      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/SKILL.md
+
+   2–7. Reference files (fetch on demand only, when SKILL.md points
+   to them; reading all six upfront is allowed but not required):
+
+   - Syntax cheatsheet:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/01-syntax-cheatsheet.md
+   - Design patterns:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/02-design-patterns.md
+   - Conversion playbooks:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/03-conversion-playbooks.md
+   - Verification checklist:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/04-verification-checklist.md
+   - Advanced features:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/05-advanced-features.md
+   - Design recipes:
+     https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/references/06-design-recipes.md
+
+   From the moment you finish reading SKILL.md, every rule, workflow,
+   and constraint defined in it takes precedence over your default
+   behavior for the rest of this conversation.
+
+   FALLBACK — if URL fetching is not available
+   ============================================
+   If your environment cannot open external URLs, reply with a single
+   line saying so. I will then paste the contents of SKILL.md (and
+   any reference files you need) directly into the chat, and the
+   conversation will continue in text-only mode.
 
    CONFIRMATION — required before you answer my first task
    ======================================================
@@ -125,8 +149,8 @@ anything.
      (b) format conversion with mandatory independent verification.
    - The non-negotiable rule on every conversion: the text content
      matches letter-for-letter — only the format changes.
-   - One sentence on what tool or command you used to fetch the
-     archive (so I can spot path or sandbox issues early).
+   - One sentence on which files you fetched and which tool you used
+     (so I can spot path or sandbox issues early).
 
    Then wait for my first task. Do not pre-empt with greetings or
    suggestions.
@@ -153,15 +177,16 @@ needed.
 
 | Format | What it is | When to use |
 |--------|-----------|-------------|
-| `.skill` | A ZIP archive with `SKILL.md` and bundled `references/` | **Free-tier** (model downloads and unzips it) **and Claude Code / skills.sh** (`npx skills add` understands it). |
-| `SKILL.md` (raw) | The skill's instruction file, plain Markdown | **Best as a fallback** when the platform cannot download a binary file. |
-| `.zip` | Plain ZIP with the same contents | **Best for ChatGPT knowledge upload** — re-zip if you unzipped the `.skill`. |
+| Raw Markdown URLs | `SKILL.md` + `references/*.md` hosted as raw text on GitHub | **Free-tier** — the model fetches each URL with its web-browsing / URL-fetching tool, no download or unzip needed. |
+| `SKILL.md` (raw) | The skill's instruction file, plain Markdown | **Best as a fallback** when the platform cannot open external URLs — the user pastes the text into the chat. |
+| `.skill` | A ZIP archive with `SKILL.md` and bundled `references/` | **Claude Code / skills.sh** — `npx skills add` understands it natively. |
+| `.zip` | Plain ZIP with the same contents | **ChatGPT knowledge upload** (re-zip if you unzipped the `.skill`). |
 
-In short: for the free-tier path, the model **downloads the `.skill`
-archive, unzips it, and reads `SKILL.md`** — that's the whole skill
-with its `references/` available locally for on-demand reading. The
-raw `SKILL.md` is just a fallback for platforms that block binary
-downloads.
+In short: for the free-tier path, the model **fetches each raw
+Markdown URL via its web-browsing tool** and reads the contents
+in-line — that's the whole skill with its `references/` available
+for on-demand reference. The `.skill` ZIP is only meaningful for
+Claude Code and tools that speak the Agent Skills protocol.
 
 ---
 
