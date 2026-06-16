@@ -257,9 +257,8 @@ Ez a jelentés a Q4 2025-ös eredményeket foglalja össze.
 > **MEGJEGYZÉS:** A tényleges konverziót a felhasználó végzi. Te a kész `.txt` fájlt
 > kapod meg, és abból készítesz wikitextet.
 
-1. **OpenOffice Writer**: File → Export → MediaWiki (.txt) formátumban.
-2. **Pandoc**: `pandoc -f docx -t mediawiki -o output.wiki input.docx`
-3. **Manuális**: a Word "Save As" → "Plain Text", de elveszik a formázás.
+1. **Pandoc**: `pandoc -f docx -t mediawiki -o output.wiki input.docx`
+2. **Manuális**: a Word "Save As" → "Plain Text", de elveszik a formázás.
 
 #### Wikitext generálás Word-ből
 

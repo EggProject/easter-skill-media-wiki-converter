@@ -113,8 +113,8 @@ Detailed conversion playbooks for each format live in
    progress bar is dropped, `__TOC__` is used instead.
 3. **PDF**: a bit more limited because we lose the layout. Text + table + image can
    usually be extracted. See the "PDF" section in `03-conversion-playbooks.md`.
-4. **Word (DOCX)**: Open Office "Export as MediaWiki" or pandoc can be a starting
-   point, but the output always needs manual fixes for MediaWiki-specific things
+4. **Word (DOCX)**: pandoc can be a starting point, but the output always
+   needs manual fixes for MediaWiki-specific things
    (TemplateStyles, gallery, syntaxhighlight, categories).
 5. **Excel (XLSX)**: only the table and cell text are extracted. Charts, conditional
    formatting, cell colors are lost. The extracted table goes in as

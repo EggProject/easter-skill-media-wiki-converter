@@ -31,9 +31,9 @@ The skill:
 > "I have a Word document at `/docs/architecture.docx`. Convert it to
 > MediaWiki and put the wikitext in `output.wiki`."
 
-The skill explains that you should first run `pandoc` or `OpenOffice` to
-get plain MediaWiki-formatted text, then hand it back. It cleans up
-pandoc's output and applies modern design.
+The skill explains that you should first run `pandoc` to get plain
+MediaWiki-formatted text, then hand it back. It cleans up pandoc's
+output and applies modern design.
 
 ```bash
 # Step 1 — extract raw MediaWiki text via pandoc

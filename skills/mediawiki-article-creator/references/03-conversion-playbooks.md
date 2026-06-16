@@ -257,9 +257,8 @@ This report summarizes the Q4 2025 results.
 > **NOTE:** The user performs the actual conversion. You receive the finished `.txt` file
 > and produce wikitext from it.
 
-1. **OpenOffice Writer**: File → Export → MediaWiki (.txt) format.
-2. **Pandoc**: `pandoc -f docx -t mediawiki -o output.wiki input.docx`
-3. **Manual**: Word "Save As" → "Plain Text", but formatting is lost.
+1. **Pandoc**: `pandoc -f docx -t mediawiki -o output.wiki input.docx`
+2. **Manual**: Word "Save As" → "Plain Text", but formatting is lost.
 
 #### Generating wikitext from Word
 

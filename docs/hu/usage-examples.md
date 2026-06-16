@@ -31,9 +31,9 @@ A skill:
 > "Van egy Word dokumentumom itt: `/docs/architecture.docx`. Konvertáld
 > MediaWiki-be, és a wikitextet tedd az `output.wiki` fájlba."
 
-A skill elmagyarázza, hogy először `pandoc`-ot vagy `OpenOffice`-ot kell
-futtatnod, hogy nyers MediaWiki-formátumú szöveget kapj, majd visszaadod
-neki. A skill kitisztítja a pandoc kimenetét, és modern designt alkalmaz.
+A skill elmagyarázza, hogy először `pandoc`-ot kell futtatnod, hogy
+nyers MediaWiki-formátumú szöveget kapj, majd visszaadod neki. A skill
+kitisztítja a pandoc kimenetét, és modern designt alkalmaz.
 
 ```bash
 # 1. lépés — nyers MediaWiki szöveg kinyerése pandoc-kal

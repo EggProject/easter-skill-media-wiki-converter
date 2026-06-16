@@ -110,8 +110,8 @@ Az egyes formátumok részletes konverziós útmutatója: `references/03-convers
    a progress-bar kikerül, ahol lehet, `__TOC__`-t használunk helyette.
 3. **PDF**: kicsit korlátosabb, mert a layout-ot elveszítjük. Szöveg + táblázat + kép
    általában kinyerhető. A pontos teendők: lásd a `03-conversion-playbooks.md` "PDF" szekcióját.
-4. **Word (DOCX)**: az Open Office "Export as MediaWiki" funkciója vagy pandoc használható
-   alapnak, de a kimeneten mindig manuálisan javítani kell a MediaWiki-specifikus dolgokat
+4. **Word (DOCX)**: a pandoc használható alapnak, de a kimeneten mindig
+   manuálisan javítani kell a MediaWiki-specifikus dolgokat
    (TemplateStyles, gallery, syntaxhighlight, kategóriák).
 5. **Excel (XLSX)**: csak a táblázatot és a cellaszövegeket nyerjük ki. A diagramok, feltételes
    formázás, cella-színek elvesznek. A kinyert táblázatot `class="wikitable sortable"` formában
