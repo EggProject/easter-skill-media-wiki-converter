@@ -1,7 +1,0 @@
-{  "enabledPlugins": {
-    "claude-mem@thedotmack": false
-  },  "includeCoAuthoredBy": false,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  }}
