@@ -98,15 +98,17 @@ anything.
      https://github.com/EggProject/easter-skill-media-wiki-converter
 
    Concretely:
-   1. Fetch the raw SKILL.md from
-      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/SKILL.md
-      and read it in full.
-   2. From now on, follow every rule and workflow defined in that
-      SKILL.md. If you need detailed syntax, design patterns, or
-      conversion playbooks, fetch the relevant file from the
-      references/ folder on demand (e.g. .../references/01-syntax-cheatsheet.md,
-      .../references/02-design-patterns.md, etc.).
-   3. Acknowledge by listing the two workflows you will follow
+   1. Download the .skill archive from
+      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator.skill
+      This file is a ZIP archive that contains SKILL.md and a
+      references/ folder.
+   2. Unzip the archive. Read SKILL.md in full and follow every rule
+      and workflow defined in it from now on.
+   3. If you need detailed syntax, design patterns, or conversion
+      playbooks, read the relevant file from the references/ folder on
+      demand (e.g. references/01-syntax-cheatsheet.md,
+      references/02-design-patterns.md, etc.).
+   4. Acknowledge by listing the two workflows you will follow
       (parallel iterative authoring; format conversion with independent
       verification), and wait for my first task.
    ```
@@ -132,15 +134,15 @@ needed.
 
 | Format | What it is | When to use |
 |--------|-----------|-------------|
-| `SKILL.md` (raw) | The skill's instruction file, plain Markdown | **Best for free-tier** — fetched by the model from GitHub, or pasted as a fallback. |
-| `.skill` | A ZIP archive with `SKILL.md` and bundled `references/` | **Best for Claude Code / skills.sh** — `npx skills add` understands it. |
+| `.skill` | A ZIP archive with `SKILL.md` and bundled `references/` | **Free-tier** (model downloads and unzips it) **and Claude Code / skills.sh** (`npx skills add` understands it). |
+| `SKILL.md` (raw) | The skill's instruction file, plain Markdown | **Best as a fallback** when the platform cannot download a binary file. |
 | `.zip` | Plain ZIP with the same contents | **Best for ChatGPT knowledge upload** — re-zip if you unzipped the `.skill`. |
 
-In short: for the platforms above, you almost always want the **raw
-`SKILL.md` content** — fetched from GitHub by the model (free tier) or
-in the project/Gem instructions (premium). The `.skill` / `.zip`
-format is only meaningful for Claude Code and tools that speak the
-Agent Skills protocol.
+In short: for the free-tier path, the model **downloads the `.skill`
+archive, unzips it, and reads `SKILL.md`** — that's the whole skill
+with its `references/` available locally for on-demand reading. The
+raw `SKILL.md` is just a fallback for platforms that block binary
+downloads.
 
 ---
 
