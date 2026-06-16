@@ -664,7 +664,8 @@ Bug javításakor:
 
 ## 📄 Licenc
 
-Ez a projekt az [MIT Licenc](LICENSE) alatt áll (Copyright © 2026 EggProject).
+Ez a projekt az [MIT Licenc](LICENSE) alatt áll (Copyright © 2026 eggproject
+Kft., Magyarország).
 
 Az MIT Licenc **minden személynek**, aki a szoftver egy példányát megszerzi,
 megadja a jogot, hogy **ingyenesen** használja, másolja, módosítsa, egyesítse,

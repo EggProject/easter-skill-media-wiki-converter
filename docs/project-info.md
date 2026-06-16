@@ -34,7 +34,7 @@ When fixing a bug:
 ## 📄 License
 
 This project is licensed under the [MIT License](../LICENSE)
-(Copyright © 2026 EggProject).
+(Copyright © 2026 eggproject Kft., Hungary).
 
 The MIT License grants **every person** who obtains a copy of this
 software the right to **use, copy, modify, merge, publish, distribute,
