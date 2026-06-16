@@ -10,20 +10,13 @@ most common platforms.
 >
 > - With a subscription → the platform *stores* the skill and applies it
 >   automatically to every conversation.
-> - Without a subscription → the platform *does not store* the skill, so
->   you paste the content into each prompt. The skill content is plain
->   Markdown, so it pastes cleanly.
-> - The `.skill` file is just a ZIP — only Claude Code and skills.sh-aware
->   tools read it natively. For other platforms, you only need the
->   `SKILL.md` content (or any of the `references/*.md` files you want
->   to expose to the model).
+> - Without a subscription → see the dedicated [Free-tier usage](#free-tier-usage-no-subscription-no-storage)
+>   section below — the same approach works on any platform.
 
 ## Claude (web interface — claude.ai) — Claude Pro, Team, or Enterprise
 
 Claude web has **Projects**, which let you store a long system prompt and
 a bag of uploaded files that apply to every conversation in the project.
-
-**With subscription (recommended):**
 
 1. Open [claude.ai](https://claude.ai) → **Projects** → **New project**.
 2. Name it e.g. *MediaWiki Article Creator*.
@@ -33,15 +26,6 @@ a bag of uploaded files that apply to every conversation in the project.
    knowledge** panel.
 5. Open a new chat inside the project — Claude now follows the skill
    rules automatically.
-
-**Without subscription (ad-hoc):**
-
-1. Download `skills/mediawiki-article-creator.skill` from this repo (or
-   open `SKILL.md` directly on GitHub).
-2. Copy the Markdown body of `SKILL.md` into your clipboard.
-3. In a new chat, paste it as the first message prefixed with *"Follow
-   these instructions for the rest of this conversation:"*.
-4. The skill is active for that chat only. Re-paste per session.
 
 ## Claude Cowork
 
@@ -62,9 +46,8 @@ workflow.
 ## ChatGPT (OpenAI) — Plus, Team, or Enterprise
 
 ChatGPT has **Custom GPTs** for subscribers. Free users cannot create a
-Custom GPT, but the skill content can still be pasted into any chat.
-
-**With subscription (Plus / Team / Enterprise):**
+Custom GPT — see the [free-tier section](#free-tier-usage-no-subscription-no-storage)
+below for the no-storage workaround.
 
 1. Open [chatgpt.com](https://chatgpt.com) → **Explore GPTs** → **Create**.
 2. In **Configure** → **Instructions**, paste the body of `SKILL.md`.
@@ -79,23 +62,11 @@ Custom GPT, but the skill content can still be pasted into any chat.
 > containing them. The frontend unzips the archive on upload and indexes
 > the text content.
 
-**Without subscription (Free tier):**
-
-1. Open `SKILL.md` on GitHub and copy its Markdown body.
-2. Start a new chat and paste it as the first message:
-   > *You are an expert MediaWiki article author. Follow these rules for
-   > the rest of this conversation:*
-   >
-   > *<paste SKILL.md body here>*
-3. Re-paste at the start of every new conversation — ChatGPT free does
-   not persist instructions across chats.
-
 ## Google Gemini (gemini.google.com) — Gemini Advanced / Workspace
 
 Gemini has **Gems** (premium) and ad-hoc chats. Free users can paste
-content into a chat but cannot save a Gem.
-
-**With subscription (Gemini Advanced / Workspace):**
+content into a chat but cannot save a Gem — see the
+[free-tier section](#free-tier-usage-no-subscription-no-storage) below.
 
 1. Open [gemini.google.com/gems/create](https://gemini.google.com/gems/create).
 2. In **Instructions**, paste the body of `SKILL.md`. Gems accept long
@@ -105,46 +76,71 @@ content into a chat but cannot save a Gem.
    [Nov 2024 Workspace update](https://workspaceupdates.googleblog.com/2024/11/upload-google-docs-and-other-file-types-to-gems.html).
 4. Save the Gem. It is now available in the Gems sidebar for any chat.
 
-**Without subscription (Free tier):**
+## Free-tier usage (no subscription, no storage)
 
-1. Download or copy `SKILL.md` from this repo.
-2. Start a new chat, paste the SKILL.md body as the first user message
-   with a brief preamble.
-3. Re-paste per chat. Gems (saved instructions) are not available on the
-   free tier.
+All of the above platforms offer a usable path even on the free tier —
+they just don't store the skill for you, so you point the model at the
+skill on every new chat. The recipe is the same everywhere: **let the
+LLM fetch the skill itself from GitHub.** You don't need to download
+anything.
+
+1. **Open a new chat** on the platform of your choice (ChatGPT, Claude
+   web, Gemini, or any other AI chat UI that supports tool use or URL
+   fetching).
+2. **Paste this prompt** as your first message — the model does the
+   rest:
+
+   ```text
+   Load the MediaWiki Article Creator skill from this public GitHub
+   repository and behave as if it were your active system-prompt
+   override for the rest of this conversation:
+
+     https://github.com/EggProject/easter-skill-media-wiki-converter
+
+   Concretely:
+   1. Fetch the raw SKILL.md from
+      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/SKILL.md
+      and read it in full.
+   2. From now on, follow every rule and workflow defined in that
+      SKILL.md. If you need detailed syntax, design patterns, or
+      conversion playbooks, fetch the relevant file from the
+      references/ folder on demand (e.g. .../references/01-syntax-cheatsheet.md,
+      .../references/02-design-patterns.md, etc.).
+   3. Acknowledge by listing the two workflows you will follow
+      (parallel iterative authoring; format conversion with independent
+      verification), and wait for my first task.
+   ```
+
+3. **Re-paste per chat.** Free-tier chats don't persist instructions
+   across conversations, so you repeat step 2 at the start of every
+   new session. (The model re-fetches the same URL each time — the
+   file is small, ~5 KB.)
+
+This approach works on ChatGPT free, Claude.ai free, Gemini free, and
+any other AI chat UI that gives the model URL-fetching or web-browsing
+tools — no platform account upgrade required, and no manual download
+needed.
+
+> 💡 **If the platform blocks outbound URL fetches** (rare on modern
+> chat UIs, but possible on some offline or sandboxed setups), the
+> fallback is to download
+> [`SKILL.md`](../skills/mediawiki-article-creator/SKILL.md) manually
+> from GitHub and paste its content directly into the first message
+> instead. The Markdown is plain text, so it pastes cleanly.
 
 ## File format: `.skill` vs `.zip` vs raw `.md`
 
 | Format | What it is | When to use |
 |--------|-----------|-------------|
-| `SKILL.md` (raw) | The skill's instruction file, plain Markdown | **Best for pasting into a prompt** on any platform. |
+| `SKILL.md` (raw) | The skill's instruction file, plain Markdown | **Best for free-tier** — fetched by the model from GitHub, or pasted as a fallback. |
 | `.skill` | A ZIP archive with `SKILL.md` and bundled `references/` | **Best for Claude Code / skills.sh** — `npx skills add` understands it. |
 | `.zip` | Plain ZIP with the same contents | **Best for ChatGPT knowledge upload** — re-zip if you unzipped the `.skill`. |
 
 In short: for the platforms above, you almost always want the **raw
-`SKILL.md` content** in the prompt, and optionally a few `references/*.md`
-files uploaded to the platform's knowledge panel. The `.skill` / `.zip`
-format is only meaningful for Claude Code and tools that speak the Agent
-Skills protocol.
-
-## Recommended prompt preamble
-
-When pasting `SKILL.md` into any platform without a dedicated skill slot,
-use this template to keep behaviour stable:
-
-```text
-You are an expert MediaWiki author and editor. From now on, follow the
-rules and workflows in the document below. Load the references if you need
-detailed syntax, design patterns, or conversion playbooks.
-
-<PASTE THE FULL CONTENT OF SKILL.md HERE>
-
-Acknowledge by listing the two workflows you will follow, and wait for my
-first task.
-```
-
-This preamble primes the model to treat the pasted content as a persistent
-system-prompt override rather than a one-off question.
+`SKILL.md` content** — fetched from GitHub by the model (free tier) or
+in the project/Gem instructions (premium). The `.skill` / `.zip`
+format is only meaningful for Claude Code and tools that speak the
+Agent Skills protocol.
 
 ---
 

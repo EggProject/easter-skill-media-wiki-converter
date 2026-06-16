@@ -18,6 +18,11 @@ description: |
   1. Parallel, iterative authoring: LLM shows code while the user negotiates.
   2. Format conversion: preserves design with the MediaWiki toolkit; every conversion
      MUST be verified by a separate agent to ensure the text was not rewritten.
+license: MIT
+compatibility: Designed for Claude Code (or similar products).
+metadata:
+  author: eggp
+  version: 1.0.0
 ---
 
 # MediaWiki Article Creator

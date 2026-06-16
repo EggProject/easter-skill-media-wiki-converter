@@ -10,21 +10,15 @@ mutatjuk be a használatot.
 >
 > - Előfizetéssel → a platform *tárolja* a skillt, és automatikusan
 >   alkalmazza minden beszélgetésben.
-> - Előfizetés nélkül → a platform *nem tárolja* a skillt, ezért minden
->   prompt elejére be kell illesztened. A skill tartalma sima Markdown, így
->   tisztán beilleszthető.
-> - A `.skill` fájl valójában egy ZIP — csak a Claude Code és a skills.sh-t
->   ismerő eszközök értik natívan. Más platformokhoz csak a `SKILL.md`
->   tartalom kell (vagy azok a `references/*.md` fájlok, amelyeket
->   elérhetővé akarsz tenni a modellnek).
+> - Előfizetés nélkül → lásd az alábbi
+>   [Ingyenes szint](#ingyenes-szint-nincs-előfizetés-nincs-tárolás)
+>   szekciót — ugyanaz a megoldás minden platformon működik.
 
 ## Claude (webes felület — claude.ai) — Claude Pro, Team vagy Enterprise
 
 A Claude weben **Projektek** vannak, amelyek hosszú rendszer-promptot és
 feltöltött fájlokat tárolnak, és minden beszélgetésre alkalmazzák a
 projekten belül.
-
-**Előfizetéssel (ajánlott):**
 
 1. Nyisd meg a [claude.ai](https://claude.ai)-t → **Projects** → **New project**.
 2. Nevezd el pl. *MediaWiki Article Creator*-nek.
@@ -34,17 +28,6 @@ projekten belül.
    knowledge** panelen.
 5. Nyiss egy új beszélgetést a projekten belül — Claude mostantól
    automatikusan követi a skill szabályait.
-
-**Előfizetés nélkül (ad-hoc):**
-
-1. Töltsd le a `skills/mediawiki-article-creator.skill` fájlt ebből a
-   repóból (vagy nyisd meg a `SKILL.md`-t közvetlenül a GitHubon).
-2. Másold a vágólapra a `SKILL.md` Markdown törzsét.
-3. Új beszélgetésben illeszd be az első üzenetként, ezzel a bevezetővel:
-   *„Kövesd az alábbi utasításokat a beszélgetés hátralévő részében:"*.
-4. A skill csak erre a beszélgetésre lesz aktív. A claude.ai ingyenes
-   szintjén nincs tárolt projekt, ezért minden munkamenetben újra be kell
-   illesztened.
 
 ## Claude Cowork
 
@@ -65,10 +48,9 @@ után a skill elérhetővé válik meghívható workflow-ként.
 ## ChatGPT (OpenAI) — Plus, Team vagy Enterprise
 
 A ChatGPT-ben **Custom GPT-k** vannak az előfizetőknek. Az ingyenes
-felhasználók nem készíthetnek Custom GPT-t, de a skill tartalmát bármely
-beszélgetésbe beilleszthetik.
-
-**Előfizetéssel (Plus / Team / Enterprise):**
+felhasználók nem készíthetnek Custom GPT-t — az ad-hoc megoldáshoz lásd
+az [ingyenes szint](#ingyenes-szint-nincs-előfizetés-nincs-tárolás)
+szekciót.
 
 1. Nyisd meg a [chatgpt.com](https://chatgpt.com)-ot → **Explore GPTs** →
    **Create**.
@@ -86,24 +68,12 @@ beszélgetésbe beilleszthetik.
 > sima `.zip`-et, amely tartalmazza azokat. A frontend kicsomagolja az
 > archívumot feltöltéskor, és indexeli a szöveges tartalmat.
 
-**Előfizetés nélkül (Free tier):**
-
-1. Nyisd meg a `SKILL.md`-t a GitHubon, és másold ki a Markdown törzsét.
-2. Indíts egy új beszélgetést, és illeszd be az első üzenetként:
-   > *Te egy tapasztalt MediaWiki cikkszerző vagy. Tartsd be az alábbi
-   > szabályokat a beszélgetés hátralévő részében:*
-   >
-   > *<ide illeszd a SKILL.md törzsét>*
-3. Minden új beszélgetés elején illeszd be újra — a ChatGPT ingyenes
-   verziója nem őrzi meg az utasításokat a beszélgetések között.
-
 ## Google Gemini (gemini.google.com) — Gemini Advanced / Workspace
 
 A Gemini-ben **Gems**-ek (prémium) és ad-hoc beszélgetések vannak. Az
 ingyenes felhasználók beilleszthetnek tartalmat egy beszélgetésbe, de
-nem menthetnek el Gem-et.
-
-**Előfizetéssel (Gemini Advanced / Workspace):**
+nem menthetnek el Gem-et — lásd az
+[ingyenes szint](#ingyenes-szint-nincs-előfizetés-nincs-tárolás) szekciót.
 
 1. Nyisd meg a
    [gemini.google.com/gems/create](https://gemini.google.com/gems/create)-et.
@@ -116,47 +86,71 @@ nem menthetnek el Gem-et.
 4. Mentsd el a Gem-et. Mostantól elérhető a Gems oldalsávban bármely
    beszélgetéshez.
 
-**Előfizetés nélkül (Free tier):**
+## Ingyenes szint (nincs előfizetés, nincs tárolás)
 
-1. Töltsd le vagy másold a `SKILL.md`-t ebből a repóból.
-2. Indíts egy új beszélgetést, és illeszd be a `SKILL.md` törzsét az
-   első felhasználói üzenetként, egy rövid bevezetővel.
-3. Minden beszélgetésben illeszd be újra. A Gems (mentett utasítások)
-   nem érhetők el az ingyenes szinten.
+A fenti platformok ingyenes szintjén is van használható megoldás — csak
+nem tárolják a skillt, ezért minden új beszélgetésnél meg kell mutatnod
+a modellnek, hol találja. A módszer mindenhol ugyanaz: **hadd töltse le
+a modell maga a skillt a GitHubról.** Semmit nem kell letöltened.
+
+1. **Nyiss egy új beszélgetést** az általad választott platformon
+   (ChatGPT, Claude web, Gemini, vagy bármely más AI chat UI, amely
+   támogatja az URL-letöltést vagy webes böngészést).
+2. **Másold be ezt a promptot** első üzenetként — a modell elvégzi a
+   többit:
+
+   ```text
+   Töltsd be a MediaWiki Article Creator skillt erről a nyilvános GitHub
+   repóról, és a beszélgetés hátralévő részére úgy viselkedj, mintha ez
+   lenne az aktív rendszer-prompt felülbírálatod:
+
+     https://github.com/EggProject/easter-skill-media-wiki-converter
+
+   Konkrétan:
+   1. Töltsd le a nyers SKILL.md-t erről a címről:
+      https://raw.githubusercontent.com/EggProject/easter-skill-media-wiki-converter/main/skills/mediawiki-article-creator/SKILL.md
+      és olvasd el teljes egészében.
+   2. Mostantól tartsd be a SKILL.md-ben definiált minden szabályt és
+      workflow-t. Ha részletes szintaxisra, design mintákra vagy
+      konverziós playbookokra van szükséged, töltsd le a megfelelő fájlt
+      a references/ mappából igény szerint (pl.
+      .../references/01-syntax-cheatsheet.md,
+      .../references/02-design-patterns.md, stb.).
+   3. Erősítsd meg a két workflow felsorolásával, amelyeket követni
+      fogsz (párhuzamos iteratív szerkesztés; formátum-konverzió
+      független ellenőrzéssel), és várj az első feladatomra.
+   ```
+
+3. **Ismételd meg minden beszélgetésben.** Az ingyenes szinten a
+   utasítások nem élnek túl egy beszélgetést, ezért a 2. lépést minden
+   új munkamenet elején meg kell ismételned. (A modell ugyanazt az
+   URL-t tölti le újra — a fájl kicsi, ~5 KB.)
+
+Ez a megoldás működik a ChatGPT free, Claude.ai free, Gemini free
+szinteken, és bármely más AI chat UI-n, amely URL-letöltési vagy
+webböngészési eszközt ad a modellnek — nincs szükség előfizetésre, és
+kézi letöltésre sincs.
+
+> 💡 **Ha a platform blokkolja a kimenő URL-letöltéseket** (ritka a
+> modern chat UI-kon, de előfordulhat offline vagy sandbox környezetben),
+> a tartalék megoldás: töltsd le kézzel a
+> [`SKILL.md`](../../skills/mediawiki-article-creator/SKILL.md) fájlt
+> a GitHubról, és másold be a tartalmát közvetlenül az első üzenetbe.
+> A Markdown sima szöveg, tisztán beilleszthető.
 
 ## Fájlformátum: `.skill` vs `.zip` vs nyers `.md`
 
 | Formátum | Mi ez | Mikor használd |
 |----------|-------|----------------|
-| `SKILL.md` (nyers) | A skill utasításfájlja, sima Markdown | **Legjobb prompt-ba illesztéshez** bármely platformon. |
+| `SKILL.md` (nyers) | A skill utasításfájlja, sima Markdown | **Legjobb ingyenes szinthez** — a modell letölti a GitHubról, vagy tartalékként beilleszthető. |
 | `.skill` | ZIP archívum `SKILL.md`-vel és `references/` mappával | **Legjobb Claude Code-hoz / skills.sh-hoz** — az `npx skills add` érti. |
 | `.zip` | Sima ZIP ugyanazzal a tartalommal | **Legjobb ChatGPT knowledge feltöltéshez** — csomagold újra, ha kicsomagoltad a `.skill`-t. |
 
 Röviden: a fenti platformokhoz szinte mindig a **nyers `SKILL.md`
-tartalmat** kell a promptba illeszteni, és opcionálisan néhány
-`references/*.md` fájlt a platform knowledge paneljére feltölteni. A
-`.skill` / `.zip` formátumnak csak a Claude Code és az Agent Skills
-protokollt ismerő eszközök számára van jelentősége.
-
-## Ajánlott prompt-preamble
-
-Ha a `SKILL.md`-t olyan platformra illeszted be, ahol nincs dedikált
-skill slot, használd ezt a sablont a stabil viselkedés fenntartásához:
-
-```text
-Te egy tapasztalt MediaWiki szerző és szerkesztő vagy. Mostantól tartsd be
-az alábbi dokumentumban található szabályokat és workflow-kat. Töltsd be
-a referenciákat, ha részletes szintaxisra, design mintákra vagy konverziós
-playbookokra van szükséged.
-
-<IDE ILLESZD A SKILL.md TELJES TARTALMÁT>
-
-Erősítsd meg a két workflow felsorolásával, amelyeket követni fogsz, és
-várj az első feladatomra.
-```
-
-Ez a preamble felkészíti a modellt, hogy a beillesztett tartalmat tartós
-rendszer-prompt felülbírálatként kezelje, ne pedig egyszeri kérdésként.
+tartalom** kell — a modell tölti le a GitHubról (ingyenes szint), vagy a
+projekt / Gem utasításokban szerepel (előfizetéses szint). A `.skill` /
+`.zip` formátumnak csak a Claude Code és az Agent Skills protokollt
+ismerő eszközök számára van jelentősége.
 
 ---
 

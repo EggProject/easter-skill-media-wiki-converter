@@ -58,8 +58,6 @@ tervezésére, tesztelésére és csomagolására használnak.
   a skill rendszerért, amely ezt lehetővé teszi
 - A [hivatalos Claude skill-creator plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator) —
   a meta-skill workflow-ért, amely ezt a skillt tervezte és csomagolta
-- A [Pandoc](https://pandoc.org/) és az [OpenOffice](https://www.openoffice.org/)
-  — a konverziós eszközökért, amelyeket a skill ajánl
 
 ---
 

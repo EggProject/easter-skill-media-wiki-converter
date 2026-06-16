@@ -29,7 +29,7 @@ mappára. A hub fókuszált marad; a mélyebb részletekre kattints át.
 | **[📦 Telepítés](docs/hu/installation.md)** | Három telepítési útvonal: skills.sh, `.skill` zip, `.claude/skills/`. |
 | **[🛠 Workflow-k](docs/hu/workflows.md)** | A két workflow — párhuzamos szerkesztés és formátum-konverzió — diagramokkal. |
 | **[💼 Használati példák](docs/hu/usage-examples.md)** | Nyolc valósághű prompt, és amit a skill készít belőlük. |
-| **[🌐 Más AI platformok](docs/hu/other-platforms.md)** | A skill használata ChatGPT-n, Claude weben, Claude Cowork-on és Geminin. |
+| **[🌐 Más AI platformok](docs/hu/other-platforms.md)** | A skill használata ChatGPT-n, Claude weben, Claude Cowork-on és Geminin — **beleértve egy előfizetés nélküli, ingyenes receptet, amely minden platformon működik**. |
 | **[📁 A skill struktúrája](docs/hu/skill-format.md)** | Lemezen lévő elrendezés, és mire való az egyes `references/*.md`. |
 | **[📋 Kompatibilitás](docs/hu/compatibility.md)** | MediaWiki verziók, kiterjesztések, ügynök hosztok, skill spec. |
 | **[📡 Publikálás](docs/hu/publishing.md)** | skills.sh frontmatter, felfedezés, validáció, csomagolás. |
@@ -103,8 +103,9 @@ Példa beszélgetés:
 
 Ennyi. A wikitextet bemásolod a MediaWiki szerkesztőbe.
 
-Más AI platformokhoz (ChatGPT, Claude web, Gemini, Claude Cowork) lásd
-a [🌐 Más AI platformok](docs/hu/other-platforms.md) oldalt.
+Más AI platformokhoz (ChatGPT, Claude web, Gemini, Claude Cowork) — beleértve
+az előfizetés nélküli, ingyenes szintű receptet, amely minden chat UI-n
+működik — lásd a [🌐 Más AI platformok](docs/hu/other-platforms.md) oldalt.
 
 ## 📄 Licenc
 
@@ -124,5 +125,10 @@ fájlban.
 
 The English documentation is here: [README.md](README.md).
 
-A magyar verziójú skill a `hungarian-example/` mappában található,
-példaként szolgál a kétnyelvűségre.
+A magyar verziójú skill a `hungarian-example/` mappában található, és
+**kifejezetten példaként szolgál a magyar kollégáknak**, akik magyar
+nyelvű rendszer-prompttal dolgoznak. Általános felhasználásra **az angol
+SKILL.md-t ajánljuk** — a drágább modelleknél a nyelv kevésbé számít, de
+olcsóbb vagy kisebb lokális modelleknél hosszabb, összetett feladatoknál
+az angol prompt megbízhatóbban követett. A magyar verziót csak akkor
+válaszd, ha a beszélgetés system promptja is magyar.

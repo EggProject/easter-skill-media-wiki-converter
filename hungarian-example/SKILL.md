@@ -18,6 +18,11 @@ description: |
   1. Párhuzamos, iteratív készítés: az LLM a kódot mutatja, a user egyeztet.
   2. Formátum-konverzió: megőrzi a designt a MediaWiki eszközkészletével; minden konverziót
      külön ügynökkel KELL ellenőriztetni, hogy a szöveget nem írta-e át.
+license: MIT
+compatibility: Designed for Claude Code (or similar products).
+metadata:
+  author: eggp
+  version: 1.0.0
 ---
 
 # MediaWiki Article Creator

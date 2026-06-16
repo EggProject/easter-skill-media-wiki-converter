@@ -28,7 +28,7 @@ focused; click through for depth.
 | **[📦 Installation](docs/installation.md)** | Three install paths: skills.sh, `.skill` zip, `.claude/skills/`. |
 | **[🛠 Workflows](docs/workflows.md)** | The two workflows — parallel authoring and format conversion — with diagrams. |
 | **[💼 Usage examples](docs/usage-examples.md)** | Eight realistic prompts and what the skill produces. |
-| **[🌐 Other AI platforms](docs/other-platforms.md)** | Using the skill on ChatGPT, Claude web, Claude Cowork, and Gemini. |
+| **[🌐 Other AI platforms](docs/other-platforms.md)** | Using the skill on ChatGPT, Claude web, Claude Cowork, and Gemini — **including a no-subscription free-tier recipe that works on every platform**. |
 | **[📁 Skill structure](docs/skill-format.md)** | On-disk layout, what each `references/*.md` is for. |
 | **[📋 Compatibility](docs/compatibility.md)** | MediaWiki versions, extensions, agent hosts, skill spec. |
 | **[📡 Publishing](docs/publishing.md)** | skills.sh frontmatter, discovery, validation, packaging. |
@@ -100,7 +100,8 @@ Example session:
 
 That's it. You copy-paste the wikitext into your MediaWiki editor.
 
-For other AI platforms (ChatGPT, Claude web, Gemini, Claude Cowork), see
+For other AI platforms (ChatGPT, Claude web, Gemini, Claude Cowork) — including
+a no-subscription free-tier recipe that works on every chat UI — see
 [🌐 Other AI platforms](docs/other-platforms.md).
 
 ## 📄 License
@@ -121,5 +122,10 @@ full text in [`LICENSE`](LICENSE) for details.
 A teljes magyar nyelvű dokumentáció és a magyar verziójú skill itt
 található: [README.hu.md](README.hu.md).
 
-A magyar skill példaként szolgál, és a `hungarian-example/` mappában
-található.
+A magyar skill a `hungarian-example/` mappában található, és **kifejezetten
+példaként szolgál a magyar kollégáknak**, akik magyar nyelvű rendszer-prompttal
+dolgoznak. Általános felhasználásra **az angol SKILL.md-t ajánljuk** —
+a drágább modelleknél a nyelv kevésbé számít, de olcsóbb vagy kisebb
+lokális modelleknél hosszabb, összetett feladatoknál az angol prompt
+megbízhatóbban követett. A magyar verziót csak akkor válaszd, ha a
+beszélgetés system promptja is magyar.

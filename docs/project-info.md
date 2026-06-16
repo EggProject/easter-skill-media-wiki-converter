@@ -57,9 +57,6 @@ a meta-skill for designing, testing, and packaging Claude Code skills.
 - The
   [official Claude skill-creator plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator) —
   for the meta-skill workflow that designed and packaged this one
-- [Pandoc](https://pandoc.org/),
-  [OpenOffice](https://www.openoffice.org/) — for the conversion tools
-  the skill recommends
 
 ---
 
