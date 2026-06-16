@@ -1,27 +1,23 @@
 ---
 name: mediawiki-article-creator
 description: |
-  Segít modern, letisztult designnal rendelkező MediaWiki cikkeket létrehozni — a nulláról való
-  párhuzamos, iteratív írástól kezdve egészen más formátumok (HTML riport, HTML slideshow, PDF,
-  Word, Excel, PowerPoint) MediaWiki wikitextté konvertálásáig.
+  Modern, letisztult designú MediaWiki cikkek készítése és más formátumok (HTML riport,
+  slideshow, PDF, Word, Excel, PowerPoint) MediaWiki wikitextté konvertálása.
 
   HASZNÁLD EZT A SKILLT, amikor a user:
-  - MediaWiki cikket, sablont, leírást, dokumentációt, jegyzetet, táblázatot vagy galériát szeretne írni
-  - "wiki szintaxist", "wikitextet", "mediawiki markupot", "wiki oldalt" kér
-  - bármilyen más formátumú tartalmat (PDF, Word, Excel, PowerPoint, HTML riport, HTML slideshow,
-    markdown, OpenDocument, rich text) szeretne MediaWiki-be átvinni
-  - a MediaWiki modern megjelenéséről kérdez (kártyák, színes dobozok, kollapszibilis szekciók,
-    szintaxiskiemelt kódblokkok, tabok, slideshow-k, infoboxok, sidebarok)
-  - MediaWiki design tippeket, layout recepteket, skin beállításokat kérdez
-  - a Wikipedia-stílusú cikkek szerkezetéről, hangneméről vagy konvenciókról kérdez
+  - MediaWiki cikket, sablont, leírást, táblázatot vagy galériát akar írni
+  - "wiki szintaxist", "wikitextet" vagy "mediawiki markupot" kér
+  - más formátumot (PDF, Word, Excel, PPT, HTML, markdown, rich text) akar MediaWiki-be vinni
+  - a MediaWiki designról kérdez (kártyák, dobozok, kódblokkok, tabok, infobox, sidebar)
+  - MediaWiki design tippeket, layout recepteket vagy skin beállítást kér
+  - a Wikipedia-stílusú cikkek struktúrájáról vagy konvencióiról kérdez
 
-  Ne használd, ha a user sima Markdown, HTML vagy más formátumban kér tartalmat (nem MediaWiki-t).
+  Ne használd sima Markdown vagy HTML kimenethez (nem MediaWiki).
 
-  Két fő workflow:
-  1. Párhuzamos, iteratív készítés: a user szabadon kommunikál, az LLM menet közben mutatja a kódot.
-  2. Formátum-konverzió: a user átadja a forrást, a skill megőrzi a designt, de MediaWiki
-     eszközkészlettel újraalkotja. Minden konverziót külön ügynökkel KELL ellenőriztetni,
-     hogy a szöveg tartalma változatlan maradt-e — CSAK a formátumot konvertáljuk.
+  Két workflow:
+  1. Párhuzamos, iteratív készítés: az LLM a kódot mutatja, a user egyeztet.
+  2. Formátum-konverzió: megőrzi a designt a MediaWiki eszközkészletével; minden konverziót
+     külön ügynökkel KELL ellenőriztetni, hogy a szöveget nem írta-e át.
 ---
 
 # MediaWiki Article Creator
@@ -230,7 +226,9 @@ A független ügynököt mindig a `general-purpose` (vagy `claude`) subagent-tí
 
 ## Stílus- és viselkedési szabályok
 
-- **Magyar nyelv.** Minden kommunikáció magyarul, kivéve a kódot és a technikai kifejezéseket.
+- **Nyelv.** A kommunikáció a felhasználó nyelvén történik. Ne erőltess a felhasználóra
+  más nyelvet, mint amit ő használ. A kód és a technikai kifejezések maradjanak az
+  eredeti formájukban.
 - **Kódblokk használata.** Minden wikitext output ` ```wiki ` blokkban legyen (NE sima
   markdown ` ``` `), hogy a user egyből be tudja másolni a MediaWiki szerkesztőbe.
 - **Teljes cikk, ne részletek.** Ha a user nem kér konkrét részt, az egész cikket mutasd.
