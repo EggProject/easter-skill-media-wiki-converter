@@ -5,6 +5,7 @@
 [![Skill Format: SKILL.md](https://img.shields.io/badge/Format-SKILL.md-success)](https://agentskills.io/specification)
 [![Wikitext](https://img.shields.io/badge/Output-MediaWiki_wikitext-36c)](https://www.mediawiki.org/wiki/Wikitext)
 [![skills.sh](https://img.shields.io/badge/skills.sh-installable-orange)](https://skills.sh)
+[![skills.sh](https://skills.sh/b/EggProject/easter-skill-media-wiki-converter)](https://skills.sh/EggProject/easter-skill-media-wiki-converter)
 [![English](https://img.shields.io/badge/Docs-English-blue)](README.md)
 [![Magyar](https://img.shields.io/badge/Docs-Magyar-green)](README.hu.md)
 
