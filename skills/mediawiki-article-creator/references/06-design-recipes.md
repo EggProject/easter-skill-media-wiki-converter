@@ -1,10 +1,16 @@
-# 06 — Design recipes (ready-to-copy code snippets)
+# 06 — Design recipes (ready-to-copy, native MediaWiki only)
 
-This file contains ready-to-copy recipes for the most common MediaWiki components.
-Each recipe includes:
+> **HARD RULE — native MediaWiki only.** Every recipe in this file uses
+> ONLY elements that ship with MediaWiki core. NO `{{Note}}`, NO
+> `<syntaxhighlight>`, NO `<templatestyles>`, NO `<mermaid>`, NO
+> `<tabber>`, NO `{{cite ...}}`, NO `{{Infobox}}`, NO `{{Sidebar}}`.
+> The full mapping is in `references/00-native-only-mapping.md`.
+
+This file contains ready-to-copy recipes for the most common MediaWiki
+components. Each recipe includes:
 - the goal (what we want to achieve),
 - the code (copyable wikitext),
-- the notes (availability, customization tips).
+- the notes (palette tokens, customization tips).
 
 ---
 
@@ -24,7 +30,8 @@ Each recipe includes:
 |}
 ```
 
-**Note:** The `sortable` class makes the table sortable, and `mw-collapsible` makes it collapsible.
+**Note:** The `sortable` class makes the table sortable, and `mw-collapsible`
+makes it collapsible. Both are core MediaWiki classes — no extension required.
 If the table is small (< 5 rows), omit `mw-collapsible`.
 
 ---
@@ -41,171 +48,158 @@ If the table is small (< 5 rows), omit `mw-collapsible`.
 |}
 ```
 
-**Note:** The `striped` class has been available since MediaWiki 1.39. In older
-versions, use TemplateStyles to achieve the striped appearance.
+**Note:** The `striped` class has been available since MediaWiki 1.39 — it is
+a core CSS class. For older MediaWiki, use a wikitable with explicit
+`style="background:..."` per row.
 
 ---
 
-## 3. Highlight box (Note, Tip, Warning, Caution)
+## 3. Highlight boxes (native inline-CSS — replaces `{{Note|Tip|Warning|Caution}}`)
+
+> **Hard rule:** `{{Note|...}}`, `{{Tip|...}}`, `{{Warning|...}}`,
+> `{{Caution|...}}` are custom templates and may not exist on the target wiki.
+> Use these native inline-CSS `<div>` boxes instead. They render on every
+> MediaWiki install.
+
+### Note (információs)
 
 ```wiki
-{{Note|Információs szöveg.}}
-{{Tip|Próbáld ki ezt a trükköt.}}
-{{Warning|Legyél óvatos, ez adatvesztést okozhat.}}
-{{Caution|Kritikus figyelmeztetés!}}
+<div style="background:#eaf3ff; border:1px solid #36c; border-left:4px solid #36c; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Note:''' Információs szöveg.
+</div>
 ```
 
-**Note:** These templates are available on mediawiki.org and on Wikipedia. If they
-are not available on the target wiki, use the `{{ambox}}` core (see below).
-
----
-
-## 4. Generic message box (works on every wiki)
+### Tip
 
 ```wiki
-{{ambox
-|type=notice
-|text=Egyszerű információs doboz.
-|image=[[File:Icon-info.svg|40px]]
-}}
+<div style="background:#d5fdf4; border:1px solid #14866d; border-left:4px solid #14866d; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Tip:''' Próbáld ki ezt a trükköt.
+</div>
 ```
 
-Types: `notice` (blue), `style` (yellow), `content` (yellow-orange), `warning` (orange),
-`serious` (red).
-
----
-
-## 5. Custom-colored box with TemplateStyles
+### Warning
 
 ```wiki
-<templatestyles src="Modul:Highlight/styles.css" />
-
-<div class="hl-primary">
-Elsődleges kiemelés
-</div>
-
-<div class="hl-warning">
-Figyelmeztetés
-</div>
-
-<div class="hl-success">
-Siker
-</div>
-
-<div class="hl-error">
-Hiba
+<div style="background:#fef6e7; border:1px solid #fc3; border-left:4px solid #fc3; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Warning:''' Legyél óvatos, ez adatvesztést okozhat.
 </div>
 ```
 
-Contents of `Modul:Highlight/styles.css`:
-
-```css
-.hl-primary {
-  background: #eaf3ff;
-  border-left: 4px solid #36c;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-  color: #202122;
-}
-.hl-warning {
-  background: #fef6e7;
-  border-left: 4px solid #fc3;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-  color: #202122;
-}
-.hl-success {
-  background: #e6f4ea;
-  border-left: 4px solid #14866d;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-  color: #202122;
-}
-.hl-error {
-  background: #fee7e6;
-  border-left: 4px solid #d33;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-  color: #202122;
-}
-@media (prefers-color-scheme: dark) {
-  .hl-primary   { background: #1a2f4f; border-left-color: #88aaee; }
-  .hl-warning   { background: #4a3a00; border-left-color: #ffcb6e; }
-  .hl-success   { background: #1d3a2a; border-left-color: #5dd39e; }
-  .hl-error     { background: #4a1a1a; border-left-color: #f8a4a4; }
-  .hl-primary, .hl-warning, .hl-success, .hl-error { color: #eaecf0; }
-}
-```
-
----
-
-## 6. Card grid (3 columns, responsive)
+### Caution (kritikus)
 
 ```wiki
-<templatestyles src="Modul:Cards/styles.css" />
-
-<div class="card-grid">
-  <div class="card">
-    <div class="card-title">Ingyenes</div>
-    <div class="card-body">Mindenki számára elérhető alapfunkciók.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Gyors</div>
-    <div class="card-body">5 perc alatt beüzemelhető.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Biztonságos</div>
-    <div class="card-body">SOC 2 tanúsítvánnyal.</div>
-  </div>
+<div style="background:#fee7e6; border:1px solid #d33; border-left:4px solid #d33; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Caution:''' Kritikus figyelmeztetés!
 </div>
 ```
 
-Contents of `Modul:Cards/styles.css`:
+### Important
 
-```css
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin: 16px 0;
-}
-.card {
-  background: #fff;
-  border: 1px solid #eaecf0;
-  border-radius: 8px;
-  padding: 16px 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.2s;
-}
-.card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.card-title {
-  font-size: 1.1em;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #36c;
-}
-.card-body {
-  color: #54595d;
-  line-height: 1.5;
-}
-@media (prefers-color-scheme: dark) {
-  .card { background: #101418; border-color: #2c2c2c; }
-  .card-body { color: #c8ccd1; }
-  .card-title { color: #88aaee; }
-}
+```wiki
+<div style="background:#f3e8ff; border:1px solid #7c3aed; border-left:4px solid #7c3aed; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Important:''' Ezt mindenképpen olvasd el.
+</div>
 ```
 
 ---
 
-## 7. Accordion (collapsible sections)
+## 4. Page-level banners (replaces `{{ambox}}`, `{{Notice}}`, `{{Outdated}}`, etc.)
 
-### Simple (mw-collapsible)
+### Page under maintenance
+
+```wiki
+<div style="background:#fef6e7; border:1px solid #fc3; border-radius:4px; padding:8px 12px; margin:8px 0; text-align:center;">
+'''Ez az oldal karbantartás alatt áll.''' A tartalom ideiglenesen pontatlan lehet.
+</div>
+```
+
+### Outdated page
+
+```wiki
+<div style="background:#fef6e7; border:1px solid #fc3; border-radius:4px; padding:8px 12px; margin:8px 0; text-align:center;">
+'''Elavult tartalom.''' Ez az oldal 2024-es információkat tartalmaz.
+</div>
+```
+
+### Historical page
+
+```wiki
+<div style="background:#eaecf0; border:1px solid #c8ccd1; border-radius:4px; padding:8px 12px; margin:8px 0; text-align:center; color:#54595d;">
+'''Történeti tartalom.''' Ez az oldal archivált, nem karbantartott.
+</div>
+```
+
+### Needs fixing
+
+```wiki
+<div style="background:#fee7e6; border:1px solid #d33; border-radius:4px; padding:8px 12px; margin:8px 0; text-align:center;">
+'''Javításra szorul.''' Ha hibát találsz, jelezd a vitalapon.
+</div>
+```
+
+---
+
+## 5. Generic message box (native — no `{{ambox}}`)
+
+```wiki
+<div style="background:#eaf3ff; border:1px solid #36c; border-left:4px solid #36c; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Egyszerű információs doboz.''' Bármilyen tartalommal feltölthető.
+</div>
+```
+
+Variants (just change the colors):
+
+| Style | Background | Border | Border-left |
+|-------|------------|--------|-------------|
+| info / notice | `#eaf3ff` | `#36c` | `#36c` |
+| tip / success | `#d5fdf4` | `#14866d` | `#14866d` |
+| warning | `#fef6e7` | `#fc3` | `#fc3` |
+| caution / serious | `#fee7e6` | `#d33` | `#d33` |
+| important | `#f3e8ff` | `#7c3aed` | `#7c3aed` |
+| quote / aside | `#f8f9fa` | `#c8ccd1` | `#c8ccd1` |
+
+---
+
+## 6. Card grid (3 columns, native wikitable — no TemplateStyles)
+
+```wiki
+{| class="wikitable" style="width:100%;"
+|+ style="text-align:left; font-weight:600;" | Három szempont
+|-
+| style="width:33%; vertical-align:top; padding:16px; background:#fff;" |
+'''Ingyenes'''
+Mindenki számára elérhető alapfunkciók.
+| style="width:33%; vertical-align:top; padding:16px; background:#fff;" |
+'''Gyors'''
+5 perc alatt beüzemelhető.
+| style="width:33%; vertical-align:top; padding:16px; background:#fff;" |
+'''Biztonságos'''
+SOC 2 tanúsítvánnyal.
+|}
+```
+
+### Card with colored top border
+
+```wiki
+{| class="wikitable" style="width:100%;"
+|-
+| style="width:33%; vertical-align:top; padding:0;" |
+<div style="background:#36c; color:#fff; padding:8px 16px; font-weight:600;">Ingyenes</div>
+<div style="padding:12px 16px;">Mindenki számára elérhető alapfunkciók.</div>
+| style="width:33%; vertical-align:top; padding:0;" |
+<div style="background:#14866d; color:#fff; padding:8px 16px; font-weight:600;">Gyors</div>
+<div style="padding:12px 16px;">5 perc alatt beüzemelhető.</div>
+| style="width:33%; vertical-align:top; padding:0;" |
+<div style="background:#7c3aed; color:#fff; padding:8px 16px; font-weight:600;">Biztonságos</div>
+<div style="padding:12px 16px;">SOC 2 tanúsítvánnyal.</div>
+|}
+```
+
+---
+
+## 7. Accordion / collapsible sections
+
+### Simple table-based (mw-collapsible, core)
 
 ```wiki
 {| class="wikitable mw-collapsible mw-collapsed"
@@ -215,7 +209,7 @@ Részletes tartalom, ami alapértelmezetten rejtve van.
 |}
 ```
 
-### Native (HTML5 details)
+### Native HTML5 `<details>` / `<summary>` (MediaWiki ≥ 1.40)
 
 ```wiki
 <details>
@@ -227,174 +221,153 @@ Első lépés részletei...
 <summary>2. lépés: Konfiguráció</summary>
 Második lépés részletei...
 </details>
+
+<details>
+<summary>3. lépés: Indítás</summary>
+Harmadik lépés részletei...
+</details>
 ```
 
-### With dark design (TemplateStyles)
+### With open styling (use a wikitable for a "card" look)
 
 ```wiki
-<templatestyles src="Modul:Accordion/styles.css" />
-
-<details class="accordion">
-  <summary>1. lépés: Előkészületek</summary>
-  <div class="accordion-body">Első lépés részletei...</div>
-</details>
-<details class="accordion">
-  <summary>2. lépés: Konfiguráció</summary>
-  <div class="accordion-body">Második lépés részletei...</div>
-</details>
+{| class="wikitable" style="width:100%;"
+|-
+! style="cursor:pointer; background:#eaecf0;" | 1. lépés: Előkészületek
+|-
+| Első lépés részletei...
+|}
 ```
 
-The `Modul:Accordion/styles.css`:
-
-```css
-.accordion {
-  background: #fff;
-  border: 1px solid #eaecf0;
-  border-radius: 6px;
-  margin: 8px 0;
-  overflow: hidden;
-}
-.accordion > summary {
-  padding: 12px 16px;
-  cursor: pointer;
-  font-weight: 600;
-  list-style: none;
-  user-select: none;
-}
-.accordion > summary::-webkit-details-marker {
-  display: none;
-}
-.accordion > summary::before {
-  content: "▶";
-  display: inline-block;
-  margin-right: 8px;
-  transition: transform 0.2s;
-}
-.accordion[open] > summary::before {
-  transform: rotate(90deg);
-}
-.accordion-body {
-  padding: 12px 16px;
-  border-top: 1px solid #eaecf0;
-  color: #54595d;
-  line-height: 1.5;
-}
-@media (prefers-color-scheme: dark) {
-  .accordion { background: #101418; border-color: #2c2c2c; }
-  .accordion-body { color: #c8ccd1; border-top-color: #2c2c2c; }
-}
-```
+**Note:** for true expand/collapse behavior, use `class="mw-collapsible"`
+or native `<details>` — the wikitable alone won't collapse without one of
+these.
 
 ---
 
-## 8. Tabs (with the TabberNeue extension)
+## 8. Tabs (native multi-column wikitable — no `<tabber>`)
+
+> **Hard rule:** do NOT use `<tabber>` (TabberNeue extension). Use a
+> multi-column `class="wikitable"` instead. On wide screens the columns
+> sit side-by-side; on narrow screens they flow vertically.
 
 ```wiki
-<tabber>
-|-| Első tab =
+{| class="wikitable"
+! style="width:33%;" | Első tab
+! style="width:33%;" | Második tab
+! style="width:33%;" | Harmadik tab
+|-
+| valign="top" |
 Ez az első tab tartalma.
 
 * Lista elem 1
 * Lista elem 2
-|-| Második tab =
-Ez a második tab tartalma.
-
+| valign="top" |
 {| class="wikitable"
 ! Fejléc !! Adat
 |-
 | A || 1
 |}
-|-| Harmadik tab =
+| valign="top" |
 Harmadik tab '''félkövér''' szöveggel.
-</tabber>
+|}
 ```
-
-**Note:** The TabberNeue extension must be installed. If it is not available,
-use a TemplateStyles + JavaScript solution (see: MediaWiki snippets).
 
 ---
 
-## 9. Breadcrumbs
+## 9. Breadcrumbs (native wikilink chain)
 
-### Simple (manual)
+> **Hard rule:** do NOT use `{{#breadcrumb:Főoldal|Projekt|Aloldal}}` or
+> `{{Breadcrumb|...}}` — those require extensions/custom templates.
+> Use a plain wikilink chain in a small inline-CSS `<div>`.
+
+### Plain (simplest)
 
 ```wiki
 [[Főoldal]] > [[Projekt]] > Aloldal
 ```
 
-### With a template (if available)
+### Styled (subtle gray, smaller font)
 
 ```wiki
-{{#breadcrumb:Főoldal|Projekt|Aloldal}}
+<div style="font-size:0.9em; color:#54595d; margin-bottom:12px;">
+[[Főoldal]] &rsaquo; [[Projekt]] &rsaquo; Aloldal
+</div>
 ```
 
-or a custom template (Template:Breadcrumb):
+### Deep breadcrumb (4+ levels)
 
 ```wiki
-{{Breadcrumb
-|link1=Főoldal
-|link2=Projekt
-|link3=Aktuális oldal
-}}
-```
-
----
-
-## 10. Infobox (custom)
-
-```wiki
-{{Infobox
-|title=Projekt neve
-|image=[[File:Logo.png|180px|center]]
-|header1=Alapadatok
-|label2=Verzió
-|data2=2.0
-|label3=Kiadás dátuma
-|data3=2025-01-15
-|label4=Szerző
-|data4=[[Anna Kovács]]
-|label5=Licenc
-|data5=[[MIT]]
-|header6=Linkek
-|label7=Dokumentáció
-|data7=[[Dokumentáció|Olvasd el]]
-|label8=Forráskód
-|data8=[https://github.com/projekt/projekt GitHub]
-|label9=Issue tracker
-|data9=[https://github.com/projekt/projekt/issues GitHub Issues]
-}}
-```
-
-**Note:** Most wikis have their own Infobox template (e.g. `Template:Infobox software`).
-Always use the target wiki's own Infobox.
-
----
-
-## 11. Navigation box (Sidebar)
-
-```wiki
-{{Sidebar
-|title=Navigáció
-|content=
-[[Első lap]]
-[[Második lap]]
-*[[Al-oldal 1]]
-*[[Al-oldal 2]]
-*[[Al-oldal 3]]
-|content2=
-[[Harmadik lap]]
-[[Negyedik lap]]
-|content3=
-* [https://example.com Külső link]
-}}
+<div style="font-size:0.9em; color:#54595d; margin-bottom:12px;">
+[[Főoldal]] &rsaquo; [[Projekt]] &rsaquo; [[Alprojekt]] &rsaquo; [[Modul]] &rsaquo; Jelenlegi oldal
+</div>
 ```
 
 ---
 
-## 12. Modern code block with syntax highlighting
+## 10. Infobox (native wikitable — no `{{Infobox}}`)
 
 ```wiki
-<syntaxhighlight lang="python">
+{| class="wikitable" style="float:right; width:300px; margin:0 0 1em 1em;"
+|+ '''Projekt neve'''
+|-
+| style="text-align:center;" | [[File:Logo.png|180px|center|alt=Logo]]
+|-
+! Alapadatok
+|-
+| '''Verzió:''' || 2.0
+|-
+| '''Kiadás dátuma:''' || 2026-01-15
+|-
+| '''Szerző:''' || [[Anna Kovács]]
+|-
+| '''Licenc:''' || [[MIT]]
+|-
+! Linkek
+|-
+| [[Dokumentáció]]
+|-
+| [https://github.com/projekt/projekt GitHub]
+|-
+| [https://github.com/projekt/projekt/issues GitHub Issues]
+|}
+```
+
+The exact same recipe works for any "key-value" infobox; just adjust the
+labels and values.
+
+---
+
+## 11. Navigation box / Sidebar (native wikitable)
+
+```wiki
+{| class="wikitable" style="float:right; width:240px; margin:0 0 1em 1em;"
+|+ '''Navigáció'''
+|-
+| '''Fő témák'''
+* [[Első lap]]
+* [[Második lap]]
+* [[Harmadik lap]]
+|-
+| '''Al-oldalak'''
+* [[Al-oldal 1]]
+* [[Al-oldal 2]]
+* [[Al-oldal 3]]
+|-
+| '''Külső linkek'''
+* [https://example.com Külső forrás]
+* [https://example.com Másik forrás]
+|}
+```
+
+---
+
+## 12. Code blocks (native `<pre>` only)
+
+### Plain code block
+
+```wiki
+<pre>
 from dataclasses import dataclass
 
 @dataclass
@@ -408,38 +381,64 @@ class User:
 if __name__ == "__main__":
     u = User("Anna", 28)
     print(u.greet())
-</syntaxhighlight>
+</pre>
 ```
 
-### Numbered code (with highlighted lines)
+### Code with a filename label (replaces `{{Codesample|...}}`)
 
 ```wiki
-<syntaxhighlight lang="python" line start="1" highlight="2,4">
-def hello(name: str) -> str:
-    return f"Hello, {name}!"  # 2. sor kiemelve
-
-def main() -> None:
-    print(hello("World"))  # 4. sor kiemelve
-
-main()
-</syntaxhighlight>
-```
-
-### Code with a label (external filename)
-
-```wiki
-{{Codesample
-|lang=python
-|code=
+'''hello.py'''
+<pre>
 def hello():
     return "Hello"
-|title=hello.py
-}}
+</pre>
 ```
+
+### Code with a "file header" (visual equivalent of `{{Codesample}}`)
+
+```wiki
+{| class="wikitable" style="background:#f8f9fa; border:1px solid #eaecf0; border-radius:4px; padding:0;"
+|-
+| style="background:#eaecf0; border-bottom:1px solid #c8ccd1; padding:4px 8px; font-family:monospace; font-size:0.9em;" | hello.py
+|-
+| style="padding:12px;" |
+<pre>
+def hello():
+    return "Hello"
+</pre>
+|}
+```
+
+### Inline code (`<code>` — core)
+
+```wiki
+A <code>hello()</code> függvény meghívása a <kbd>Ctrl</kbd>+<kbd>C</kbd> billentyűkombinációval történik.
+```
+
+### Keyboard input (`<kbd>` — core)
+
+```wiki
+A mentéshez nyomd meg: <kbd>Ctrl</kbd> + <kbd>S</kbd>
+```
+
+### Button-style text (`<kbd>` — core, replaces `{{Button|...}}`)
+
+```wiki
+Kattints a <kbd>Mentés</kbd> gombra.
+```
+
+### Variable or placeholder (`<var>` — core)
+
+```wiki
+A felhasználónév: <var>{{{username}}}</var>
+```
+
+> **Note:** `<syntaxhighlight lang="...">` requires the SyntaxHighlight
+> extension. Plain `<pre>` is portable.
 
 ---
 
-## 13. Code + explanation (two columns)
+## 13. Code + explanation (two-column wikitable)
 
 ```wiki
 {| class="wikitable"
@@ -447,18 +446,18 @@ def hello():
 ! Magyarázat
 |-
 |
-<syntaxhighlight lang="python">
+<pre>
 def hello(name: str) -> str:
     return f"Hello, {name}!"
-</syntaxhighlight>
+</pre>
 |
 A <code>hello</code> függvény egy üdvözlést ad vissza a <var>name</var> paraméter alapján.
 A függvény típus annotációval van ellátva, ami segíti a kód olvasását.
 |-
 |
-<syntaxhighlight lang="python">
+<pre>
 print(hello("World"))
-</syntaxhighlight>
+</pre>
 |
 A függvény hívása a <code>print</code> függvénnyel együtt a konzolra írja az üdvözlést.
 |}
@@ -469,18 +468,18 @@ A függvény hívása a <code>print</code> függvénnyel együtt a konzolra írj
 ## 14. Button-style code snippet (terminal look)
 
 ```wiki
-<div style="background: #1e1e1e; color: #d4d4d4; padding: 12px 16px; border-radius: 6px; font-family: 'Courier New', monospace; margin: 12px 0;">
-$ <span style="color: #4ec9b0;">npm</span> install mediawiki-cli<br />
-$ <span style="color: #4ec9b0;">mediawiki-cli</span> --version<br />
-<span style="color: #608b4e;">mediawiki-cli v2.0.1</span>
+<div style="background:#1e1e1e; color:#d4d4d4; padding:12px 16px; border-radius:6px; font-family:'Courier New', monospace; margin:12px 0;">
+$ <span style="color:#4ec9b0;">npm</span> install mediawiki-cli<br />
+$ <span style="color:#4ec9b0;">mediawiki-cli</span> --version<br />
+<span style="color:#608b4e;">mediawiki-cli v2.0.1</span>
 </div>
 ```
 
 ---
 
-## 15. Galleries
+## 15. Galleries (native `<gallery>` tag)
 
-### Basic gallery (images in a grid)
+### Basic gallery
 
 ```wiki
 <gallery caption="Példa galéria" widths="200" heights="150">
@@ -490,7 +489,7 @@ File:Kép3.jpg|3. kép
 </gallery>
 ```
 
-### Modern caption appearing on hover
+### Modern caption appearing on hover (packed-hover)
 
 ```wiki
 <gallery mode="packed-hover" heights="200px" caption="Modern galéria" class="center">
@@ -511,83 +510,98 @@ File:Kép3.jpg|3. dia
 </gallery>
 ```
 
----
-
-## 16. Mathematical formulas
-
-```wiki
-A Pitagorasz-tétel: <math>a^2 + b^2 = c^2</math>
-
-Egy egyenlet: <math>\sum_{i=1}^{n} i = \frac{n(n+1)}{2}</math>
-
-Integrál: <math>\int_{0}^{1} x^2 \, dx = \frac{1}{3}</math>
-
-Mátrix: <math>\begin{pmatrix} a & b \\ c & d \end{pmatrix}</math>
-```
-
-**Note:** The Math extension must be installed (usually available by default).
+> **Note:** `<gallery>` is a core MediaWiki tag — no extension required.
 
 ---
 
-## 17. Diagrams (with the Mermaid extension)
-
-### Flowchart
+## 16. Mathematical formulas (native HTML only)
 
 ```wiki
-<mermaid>
-graph TD
-  A[Kezdés] --> B{Döntés}
-  B -->|Igen| C[1. út]
-  B -->|Nem| D[2. út]
-  C --> E[Vége]
-  D --> E
-</mermaid>
+A Pitagorasz-tétel: <span class="texhtml"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> = <i>c</i><sup>2</sup></span>
+
+Egy egyenlet: <span class="texhtml">&sum;<sub><i>i</i>=1</sub><sup><i>n</i></sup> <i>i</i> = <i>n</i>(<i>n</i>+1)/2</span>
+
+Integrál: <span class="texhtml">&int;<sub>0</sub><sup>1</sup> <i>x</i><sup>2</sup> d<i>x</i> = 1/3</span>
 ```
 
-### Sequence diagram
+For a centered, display-style formula:
 
 ```wiki
-<mermaid>
-sequenceDiagram
-  participant A as Kliens
-  participant B as Szerver
-  A->>B: Kérés
-  B-->>A: Válasz
-  A->>B: Új kérés
-  B-->>A: Új válasz
-</mermaid>
+<div class="texhtml" style="text-align:center; margin:16px 0; font-size:1.1em;">
+<i>A</i> = <sup>1</sup>&frasl;<sub>2</sub> |<span style="text-decoration:overline;">v</span> &times; <span style="text-decoration:overline;">w</span>|
+</div>
 ```
 
-### Class diagram
-
-```wiki
-<mermaid>
-classDiagram
-  class Animal {
-    +String name
-    +int age
-    +makeSound()
-  }
-  class Dog {
-    +fetch()
-  }
-  Animal <|-- Dog
-</mermaid>
-```
-
-**Note:** The Mermaid extension must be installed.
+> **Note:** `<math>...</math>` requires the Math extension. The native
+> `<span class="texhtml">` + HTML `<sup>` / `<sub>` renders on every
+> MediaWiki install.
 
 ---
 
-## 18. Footnotes
+## 17. Diagrams (no `<mermaid>` — native `<pre>` or `<table>`)
+
+### ASCII flowchart in `<pre>`
+
+```wiki
+<pre>
+[Kezdés]
+   |
+   v
+{Döntés: folytatjuk?}
+   |
+   +--- nem ---> [Stop]
+   |
+  igen
+   |
+   v
+[1. lépés] --> [2. lépés] --> [Vége]
+</pre>
+```
+
+### Box-and-line diagram with native `<table>`
+
+```wiki
+{| style="border:none; margin: 12px auto;"
+|+ '''Munkafolyamat'''
+|-
+| style="text-align:center; padding:8px 16px; background:#eaecf0; border:1px solid #c8ccd1; border-radius:6px;" | Kezdés
+| style="text-align:center; font-size:1.4em;" | &darr;
+| style="text-align:center; padding:8px 16px; background:#eaf3ff; border:1px solid #36c; border-radius:6px;" | 1. lépés
+| style="text-align:center; font-size:1.4em;" | &darr;
+| style="text-align:center; padding:8px 16px; background:#eaf3ff; border:1px solid #36c; border-radius:6px;" | 2. lépés
+| style="text-align:center; font-size:1.4em;" | &darr;
+| style="text-align:center; padding:8px 16px; background:#d5fdf4; border:1px solid #14866d; border-radius:6px;" | Vége
+|}
+```
+
+### Sequence / class diagram (use a wikitable)
+
+```wiki
+{| class="wikitable"
+! Actor !! Action !! Result
+|-
+| Kliens || Kérés küldése || Kérés a szervernek
+|-
+| Szerver || Feldolgozás || Válasz előkészítése
+|-
+| Szerver || Válasz küldése || Válasz a kliensnek
+|}
+```
+
+> **Note:** `<mermaid>...</mermaid>` requires the Mermaid extension. The
+> native `<pre>` + `<table>` alternatives render on every MediaWiki install.
+
+---
+
+## 18. Footnotes (native `<ref>` — no `{{cite ...}}`)
 
 ### Simple footnote
 
 ```wiki
-Ez egy állítás.<ref>{{cite web|url=https://example.com|title=Cím|author=Szerző|date=2025-01-15}}</ref>
+Ez egy állítás.<ref>[https://example.com Cím], Szerző, 2026-01-15.</ref>
 ```
 
-### List at the bottom of the page
+### Reference list at the bottom of the page
 
 ```wiki
 <references />
@@ -610,98 +624,89 @@ Még egy említés.<ref name="smith2020" />
 <ref name="smith2020">Smith, John (2020). "A cikk címe". Journal, 12(3), 45-67.</ref>
 ```
 
-### Hungarian templates
+### Citation string formats (manual)
 
 ```wiki
-{{cite web|url=https://example.com|title=Cím|access-date=2025-01-15}}
-{{cite book|last=Kovács|first=Anna|title=A könyv címe|year=2024|publisher=Akadémiai|location=Budapest|isbn=978-963-XXX-XXX-X}}
-{{cite journal|last=Nagy|first=Béla|title=A cikk|journal=Folyóirat|volume=12|issue=3|year=2024|pages=45-67}}
+<ref>[https://example.com Web oldal címe], Szerző Neve, 2026-01-15.</ref>
+<ref>Kovács Anna (2024). ''A könyv címe''. Akadémiai Kiadó. ISBN 978-963-XXX-XXX-X.</ref>
+<ref>Nagy Béla (2024). "A cikk". ''Folyóirat neve'', 12(3), 45-67.</ref>
+<ref>[https://example.com/news Hírek]. ''Újság neve'', 2026-01-15.</ref>
+<ref>Source: Internal documentation, 2026-01-15.</ref>
 ```
+
+> **Note:** `{{cite web|...}}`, `{{cite book|...}}`, etc. require the Cite
+> extension. Manual citation strings render on every MediaWiki install.
 
 ---
 
-## 19. Modern, clean article header
+## 19. Modern, clean article header (hero)
 
 ```wiki
-__NOTOC__{{short description|Modern, letisztult MediaWiki cikk példa}}
+{| style="width:100%; background:linear-gradient(135deg,#36c 0%,#447ff5 100%); color:#fff; border-radius:8px; padding:24px; margin-bottom:24px;"
+|-
+| style="text-align:center;" |
+<div style="font-size:1.5em; font-weight:600;">A cikk címe</div>
+<div style="margin-top:8px; opacity:0.9;">Rövid leírás a cikkről</div>
+|}
+```
 
-<div style="text-align: center; padding: 24px; background: linear-gradient(135deg, #36c 0%, #447ff5 100%); color: white; border-radius: 8px; margin-bottom: 24px;">
-<div style="font-size: 1.5em; font-weight: 600;">A cikk címe</div>
-<div style="margin-top: 8px; opacity: 0.9;">Rövid leírás a cikkről</div>
+> **Note:** this is the native alternative to the TemplateStyles-based hero.
+> It looks identical and works on every MediaWiki install.
+
+---
+
+## 20. Hatnote (replaces `{{Main|...}}`, `{{See also|...}}`, `{{For|...}}`)
+
+### Main / kapcsolódó cikk
+
+```wiki
+<div style="font-style:italic; margin-bottom:12px; color:#54595d;">
+Bővebben lásd: [[Másik cikk]].
 </div>
-
-== Áttekintés ==
-
-...
 ```
 
-**Note:** This "hero" element would look nicer and be more responsive if implemented with TemplateStyles.
-
----
-
-## 20. Custom TemplateStyles: full example
-
-### The module: `Modul:Hero/styles.css`
-
-```css
-.hero {
-  text-align: center;
-  padding: 32px 24px;
-  background: linear-gradient(135deg, #36c 0%, #447ff5 100%);
-  color: white;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-.hero-title {
-  font-size: 1.75em;
-  font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -0.01em;
-}
-.hero-subtitle {
-  font-size: 1em;
-  opacity: 0.9;
-  font-weight: 400;
-}
-@media (prefers-color-scheme: dark) {
-  .hero {
-    background: linear-gradient(135deg, #1a2f4f 0%, #2c4a7f 100%);
-  }
-}
-@media (max-width: 600px) {
-  .hero {
-    padding: 24px 16px;
-  }
-  .hero-title {
-    font-size: 1.4em;
-  }
-}
-```
-
-### Usage on the page
+### See also / lásd még
 
 ```wiki
-<templatestyles src="Modul:Hero/styles.css" />
+<div style="font-style:italic; margin-bottom:12px; color:#54595d;">
+Lásd még: [[Kapcsolódó 1]], [[Kapcsolódó 2]].
+</div>
+```
 
-<div class="hero">
-  <div class="hero-title">A cikk címe</div>
-  <div class="hero-subtitle">Rövid leírás a cikkről</div>
+### For / más néven
+
+```wiki
+<div style="font-style:italic; margin-bottom:12px; color:#54595d;">
+Más néven: [[Alternatív név]].
 </div>
 ```
 
 ---
 
-## 21. Complete, modern article template (all of the above combined)
+## 21. Source attribution (replaces `{{Forrás|...}}`, `{{Source|...}}`)
 
 ```wiki
-__NOTOC__{{short description|Modern, letisztult MediaWiki cikk sablon}}
-<templatestyles src="Modul:Hero/styles.css" />
-<templatestyles src="Modul:Cards/styles.css" />
+<div style="background:#f8f9fa; border:1px solid #eaecf0; border-radius:4px; padding:8px 12px; margin:12px 0; font-size:0.9em; color:#54595d;">
+'''Forrás:''' Eredeti dokumentum, 2026-01-15. Fordította: [[Anna Kovács]].
+</div>
+```
 
-<div class="hero">
-  <div class="hero-title">A cikk címe</div>
-  <div class="hero-subtitle">Rövid leírás a cikkről</div>
+Place at the top of the article (after the lead paragraph).
+
+---
+
+## 22. Complete, modern article template (native only)
+
+```wiki
+{| style="width:100%; background:linear-gradient(135deg,#36c 0%,#447ff5 100%); color:#fff; border-radius:8px; padding:24px; margin-bottom:24px;"
+|-
+| style="text-align:center;" |
+<div style="font-size:1.5em; font-weight:600;">A cikk címe</div>
+<div style="margin-top:8px; opacity:0.9;">Rövid leírás a cikkről</div>
+|}
+
+<div style="background:#f8f9fa; border:1px solid #eaecf0; border-radius:4px; padding:8px 12px; margin:12px 0; font-size:0.9em; color:#54595d;">
+'''Forrás:''' Eredeti dokumentum, 2026-01-15.
 </div>
 
 == Áttekintés ==
@@ -709,33 +714,34 @@ __NOTOC__{{short description|Modern, letisztult MediaWiki cikk sablon}}
 Ez a cikk egy rövid áttekintést ad a témáról. Az első bekezdés összefoglalja a
 legfontosabb tudnivalókat.
 
-{{Note|Hasznos információ a cikkről.}}
+<div style="background:#eaf3ff; border:1px solid #36c; border-left:4px solid #36c; border-radius:4px; padding:12px 16px; margin:12px 0;">
+'''Note:''' Hasznos információ a cikkről.
+</div>
 
 == Három fő szempont ==
 
-<div class="card-grid">
-  <div class="card">
-    <div class="card-title">1. szempont</div>
-    <div class="card-body">Első szempont részletes leírása.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">2. szempont</div>
-    <div class="card-body">Második szempont részletes leírása.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">3. szempont</div>
-    <div class="card-body">Harmadik szempont részletes leírása.</div>
-  </div>
-</div>
+{| class="wikitable" style="width:100%;"
+|+ style="text-align:left; font-weight:600;" | Összehasonlítás
+|-
+| style="width:33%; vertical-align:top; padding:16px;" |
+'''1. szempont'''
+Első szempont részletes leírása.
+| style="width:33%; vertical-align:top; padding:16px;" |
+'''2. szempont'''
+Második szempont részletes leírása.
+| style="width:33%; vertical-align:top; padding:16px;" |
+'''3. szempont'''
+Harmadik szempont részletes leírása.
+|}
 
 == Részletes leírás ==
 
 === Első alfejezet ===
 
-<syntaxhighlight lang="python">
+<pre>
 def hello(name: str) -> str:
     return f"Hello, {name}!"
-</syntaxhighlight>
+</pre>
 
 === Második alfejezet ===
 
@@ -782,12 +788,14 @@ A rendszer ingyenes, de...
 
 ---
 
-## 22. When to use which recipe
+## 23. When to use which recipe
 
 | If the user asks for... | Use this recipe... |
 |------------------------------|----------------------------|
 | "create a table" | 1, 2 |
-| "create a box" | 3, 4, 5 |
+| "create a Note / Tip / Warning box" | 3 |
+| "create a page banner" | 4 |
+| "create a generic message box" | 5 |
 | "create cards" | 6 |
 | "create a collapsible section" | 7 |
 | "create tabs" | 8 |
@@ -799,8 +807,10 @@ A rendszer ingyenes, de...
 | "create a mathematical formula" | 16 |
 | "create a diagram" | 17 |
 | "create a footnote" | 18 |
-| "create a hero header" | 19, 20 |
-| "create a complete article" | 21 |
+| "create a hero header" | 19 |
+| "create a hatnote" | 20 |
+| "create source attribution" | 21 |
+| "create a complete article" | 22 |
 
 ---
 
@@ -808,3 +818,4 @@ Sources:
 - MediaWiki syntax: `references/01-syntax-cheatsheet.md`
 - Design patterns: `references/02-design-patterns.md`
 - Advanced features: `references/05-advanced-features.md`
+- Native-only mapping: `references/00-native-only-mapping.md`

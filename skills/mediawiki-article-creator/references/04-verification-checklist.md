@@ -3,6 +3,15 @@
 > This file describes how the independent agent (launched by the `Agent` tool)
 > should verify the MediaWiki wikitext against the source.
 
+> **HARD RULE — native-only enforcement.** Every check in this file assumes
+> the wikitext was produced with the **native MediaWiki toolbox only** —
+> no extensions, no custom templates. The verification agent MUST additionally
+> enforce section 6 below. If the agent finds a banned token (e.g. `{{Note|...}}`,
+> `<syntaxhighlight>`, `<templatestyles>`, `<mermaid>`, `<tabber>`,
+> `{{cite web|...}}`, `<math>`, `{{#invoke:...}}`, `{{Infobox|...}}`),
+> the report is an immediate FAIL with the fix being: replace with the
+> native equivalent from `references/00-native-only-mapping.md`.
+
 ---
 
 ## Launching the agent
@@ -144,9 +153,8 @@ MediaWiki's own toolset.
 
 #### 2.6. Code
 
-- [ ] Is code in `<syntaxhighlight lang="...">` format?
-- [ ] Is the `lang` attribute appropriate (python, javascript, etc.)?
-- [ ] Is the code text UNCHANGED (highlighting is not a modification)?
+- [ ] Is code in native `<pre>` format? (NEVER `<syntaxhighlight>` — requires extension)
+- [ ] Is the code text UNCHANGED?
 
 #### 2.7. Quotes
 
@@ -156,9 +164,12 @@ MediaWiki's own toolset.
 
 #### 2.8. Highlights, boxes
 
-- [ ] Is a "Note"-type box from the source in `{{Note|...}}` format?
-- [ ] Is a "Warning"-type box from the source in `{{Warning|...}}` format?
+- [ ] Is a "Note"-type box from the source in **inline-CSS `<div style="...">`** form?
+      (NEVER `{{Note|...}}`, `{{Tip|...}}`, `{{Warning|...}}`,
+      `{{Caution|...}}`, `{{ambox|...}}`, `{{Notice|...}}`)
 - [ ] Is the box text UNCHANGED?
+- [ ] Does the box use one of the color palette tokens from
+      `references/00-native-only-mapping.md` section 3.1?
 
 #### 2.9. Links
 
@@ -175,21 +186,31 @@ MediaWiki's own toolset.
 
 ---
 
-### 3. Design preservation (adapted to MediaWiki's capabilities)
+### 3. Design preservation (native MediaWiki only)
 
-**Goal:** Where the source's design elements can be preserved, they should be.
-Where they cannot, the MediaWiki equivalent should be used.
+**Goal:** Where the source's design elements can be preserved, they should be —
+using ONLY the native MediaWiki toolbox. NEVER use TemplateStyles, Scribunto,
+or any extension-based styling. Inline CSS on `<div>` and `<table>` is the only
+permitted styling surface.
 
 #### 3.1. Colors
 
-- [ ] If the source had specific colors, do they appear in the wiki (via TemplateStyles)?
+- [ ] Are colors expressed via inline `style="..."` attributes on `<div>` or
+      `<table>` (or via the standard `class="wikitable"`)?
+- [ ] Do the colors come from the palette tokens in
+      `references/00-native-only-mapping.md` section 3.1?
 - [ ] If the source's color palette was consistent, is it so in the wiki as well?
-- [ ] If TemplateStyles is NOT available, are colors expressed with a `style="..."` attribute?
+- [ ] **NO `<templatestyles>` tag anywhere** (instant FAIL if present).
 
 #### 3.2. Boxes, cards
 
-- [ ] Are "card"-type boxes from the source present in the wiki (via TemplateStyles)?
-- [ ] If TemplateStyles is NOT available, are the boxes in `<div style="...">` form?
+- [ ] Are "card"-type boxes from the source present in the wiki as
+      `class="wikitable"` tables with inline `style="..."` on cells?
+- [ ] Are callout boxes inline-CSS `<div style="...">` per the recipes in
+      `references/00-native-only-mapping.md` section 3.1?
+- [ ] **NO `{{Note|...}}` / `{{Tip|...}}` / `{{Warning|...}}` /
+      `{{Caution|...}}` / `{{Important|...}}` / `{{ambox|...}}` anywhere**
+      (instant FAIL if present).
 
 #### 3.3. Accordion
 
@@ -219,6 +240,19 @@ the MediaWiki engine.
 
 - [ ] Are template calls in the correct format (`{{name|param=value}}`)?
 - [ ] Are the template parameters correct?
+- [ ] Are ONLY native magic-word templates used (`{{PAGENAME}}`, `{{CURRENTYEAR}}`,
+      `{{FULLPAGENAME}}`, `{{NAMESPACE}}`, `{{REVISIONID}}`, `{{#time:}}` etc.)?
+- [ ] **NO custom templates** like `{{Note}}`, `{{Tip}}`, `{{Warning}}`,
+      `{{Caution}}`, `{{Infobox}}`, `{{Sidebar}}`, `{{cite ...}}`, `{{blockquote}}`,
+      `{{pull quote}}`, `{{Quotation}}`, `{{Codesample}}`, `{{Key press}}`,
+      `{{Button}}`, `{{Forrás}}`, `{{Source}}`, `{{Main}}`, `{{See also}}`,
+      `{{For}}`, `{{Breadcrumb}}`, `{{#breadcrumb}}`, `{{#invoke:...}}`,
+      `{{ambox}}`, `{{Notice}}`, `{{Outdated}}`, `{{Historical}}`, `{{Fixme}}`,
+      `{{Todo}}`, `{{Update}}`, `{{Graph:Chart}}` — instant FAIL if present.
+- [ ] **NO ParserFunctions** (`{{#if:}}`, `{{#switch:}}`, `{{#expr:}}`,
+      `{{#time:}}` from the ParserFunctions extension) — instant FAIL.
+      Use only the core `{{#time:}}` from `Help:Magic_words` if a time
+      expression is required.
 
 #### 4.3. Links
 
@@ -340,6 +374,126 @@ notify the user:
 3. **If the categories in the source are not clear** (which category should the article go in?).
 4. **If the footnote format in the source is not clear** (reference, citation, etc.).
 5. **If the source language is not Hungarian** and the user has not specified whether to translate.
+
+---
+
+### 6. Native-only enforcement (CRITICAL — instant FAIL)
+
+**Goal:** the wikitext MUST work on a stock MediaWiki install with only the
+core parser. NO extensions and NO custom templates may be used.
+
+#### 6.1. Banned extension tags
+
+If ANY of the following appear in the wikitext, the report is an **immediate
+FAIL**. Replace with the native equivalent from
+`references/00-native-only-mapping.md`.
+
+| Banned token | Native replacement |
+|--------------|--------------------|
+| `<syntaxhighlight lang="...">` | `<pre>` |
+| `<templatestyles src="..." />` | inline `style="..."` on `<div>` / `<table>` |
+| `<math>...</math>` | `<span class="texhtml">` + HTML `<sup>` / `<sub>` |
+| `<mermaid>...</mermaid>` | ASCII diagram in `<pre>` or `<table>` box diagram |
+| `<graphviz>...</graphviz>` | ASCII diagram in `<pre>` or `<table>` box diagram |
+| `<tabber>...</tabber>` | multi-column `class="wikitable"` |
+| `<categorytree>` / `{{#categorytree:...}}` | native `<gallery>` + `[[:Category:...]]` |
+| `<poem>...</poem>` | simple `<br />` lines |
+| `<ref name="..." />` inside `{{cite ...}}` | manual citation string |
+| `<inputbox>` | native search-form wikitext |
+| `<section>` / `<references responsive>` outside core | core equivalent |
+| `__HIDDENCAT__` inside `<noinclude>` | acceptable (core magic word) |
+
+#### 6.2. Banned custom templates
+
+If ANY of the following appear in the wikitext, the report is an **immediate
+FAIL**. Replace with the native equivalent from
+`references/00-native-only-mapping.md`.
+
+| Banned template | Native replacement |
+|-----------------|--------------------|
+| `{{Note\|...}}` | inline-CSS `<div>` (note style) |
+| `{{Tip\|...}}` | inline-CSS `<div>` (tip style) |
+| `{{Warning\|...}}` | inline-CSS `<div>` (warning style) |
+| `{{Caution\|...}}` | inline-CSS `<div>` (caution style) |
+| `{{Important\|...}}` | inline-CSS `<div>` (important style) |
+| `{{NoteTip\|...}}` | inline-CSS `<div>` |
+| `{{ambox\|...}}` | inline-CSS `<div>` |
+| `{{Notice\|...}}` | inline-CSS `<div>` |
+| `{{Outdated\|...}}` | inline-CSS `<div>` (yellow banner) |
+| `{{Historical\|...}}` | inline-CSS `<div>` (gray banner) |
+| `{{Fixme\|...}}` | inline-CSS `<div>` (warning style) |
+| `{{Todo\|...}}` | inline-CSS `<div>` (note style) |
+| `{{Update\|...}}` | inline-CSS `<div>` (warning style) |
+| `{{Codesample\|...}}` | wikitable with `<pre>` cell |
+| `{{Key press\|...}}` | native `<kbd>` |
+| `{{Button\|...}}` | native `<kbd>` |
+| `{{blockquote\|...}}` | native `<blockquote>` |
+| `{{pull quote\|...}}` | native `<blockquote>` |
+| `{{Quotation\|...}}` | native `<blockquote>` |
+| `{{cite web\|...}}` | native `<ref>` with manual citation string |
+| `{{cite book\|...}}` | native `<ref>` with manual citation string |
+| `{{cite journal\|...}}` | native `<ref>` with manual citation string |
+| `{{cite news\|...}}` | native `<ref>` with manual citation string |
+| `{{Graph:Chart\|...}}` | ASCII in `<pre>` or `<table>` box diagram |
+| `{{Sidebar\|...}}` | wikitable floated right |
+| `{{Infobox\|...}}` | wikitable floated right |
+| `{{Source\|...}}` | inline-CSS `<div>` at top of article |
+| `{{Forrás\|...}}` | inline-CSS `<div>` at top of article |
+| `{{Main\|...}}` | native hatnote `<div>` |
+| `{{See also\|...}}` | native hatnote `<div>` |
+| `{{For\|...}}` | native hatnote `<div>` |
+| `{{Breadcrumb\|...}}` | wikilink chain in inline-CSS `<div>` |
+| `{{#breadcrumb:...}}` | wikilink chain in inline-CSS `<div>` |
+| `{{#invoke:Module:...}}` | plain wikitext (no scripting) |
+| `{{CategoryTree\|...}}` | `<gallery>` + `[[:Category:...]]` |
+| `{{#if:...}}` / `{{#switch:...}}` / `{{#expr:...}}` (ParserFunctions) | rewrite in plain wikitext |
+
+#### 6.3. Banned ParserFunctions / Scribunto
+
+- [ ] No `{{#if:}}`, `{{#ifeq:}}`, `{{#switch:}}`, `{{#expr:}}`, `{{#time:}}`
+      (ParserFunctions extension). `{{#time:}}` is acceptable ONLY if it is
+      the core `Help:Magic_words` `{{#time:` — confirm by reading the wiki
+      docs. Otherwise, rewrite the conditional in plain wikitext.
+- [ ] No `{{#invoke:Module:Foo|...}}` (Scribunto). All Lua logic must be
+      inlined as plain wikitext.
+- [ ] No `{{#tag:...}}` with extension namespaces (e.g. `{{#tag:tabber|...}}`).
+
+#### 6.4. Native toolbox whitelist
+
+The verification agent MUST confirm that ONLY the following elements appear
+in the wikitext:
+
+- **Wikitext markup:** `[[...]]`, `[...]`, `[[...|...]]`, `[[:Category:...]]`,
+  `[[File:...]]`, `{{PAGENAME}}`, `{{CURRENTYEAR}}`, `{{FULLPAGENAME}}`,
+  `{{NAMESPACE}}`, `{{REVISIONID}}`, `__TOC__`, `__NOTOC__`, `__FORCETOC__`,
+  `__HIDDENCAT__`, `__NOEDITSECTION__`, `__NEWSECTIONLINK__`,
+  `{{#time:Y}}` (core, if needed).
+- **Native HTML elements:** `<div>`, `<span>`, `<p>`, `<pre>`, `<code>`,
+  `<kbd>`, `<var>`, `<abbr>`, `<s>`, `<u>`, `<sup>`, `<sub>`, `<small>`,
+  `<big>`, `<br />`, `<hr />`, `<blockquote>`, `<q>`, `<cite>`,
+  `<table>`, `<tr>`, `<th>`, `<td>`, `<caption>`, `<colgroup>`, `<col>`,
+  `<thead>`, `<tbody>`, `<tfoot>`, `<details>`, `<summary>`,
+  `<a href="...">` (external only).
+- **Native MediaWiki tags:** `<gallery>`, `<ref>`, `<references />`,
+  `<includeonly>`, `<noinclude>`, `<onlyinclude>`, `<templatedata>`
+  (for documentation only, not styling).
+- **Native CSS classes:** `wikitable`, `wikitable sortable`, `wikitable striped`,
+  `mw-collapsible`, `mw-collapsed`, `mw-headline`, `mw-parser-output`,
+  `mw-code`, `center`, `TexHTML`.
+- **Inline CSS:** minimal, on `<div>` and `<table>` only, palette tokens from
+  `references/00-native-only-mapping.md` section 3.1.
+
+Anything outside this whitelist is a violation that must be reported and
+fixed.
+
+#### 6.5. Why this matters
+
+If the wikitext uses `{{Note|...}}` and the target wiki doesn't have
+`Template:Note` defined, the wikitext renders as raw `Sablon:Note` text
+(the literal template name appears on the page). The user has already hit
+this bug — see `references/00-native-only-mapping.md` section 1 for the
+list of native replacements that always render correctly on stock
+MediaWiki.
 
 ---
 
