@@ -15,7 +15,7 @@
 > an independent agent to ensure the text is never rewritten, only the
 > format is converted.
 
-[🇭🇺 **Magyar nyelvű dokumentáció itt** →](README.hu.md)
+🇭🇺 **[Magyar nyelvű dokumentáció itt →](README.hu.md)**
 
 ---
 
@@ -26,14 +26,14 @@ focused; click through for depth.
 
 | Page | What's in it |
 |------|--------------|
-| **[📦 Installation](docs/installation.md)** | Three install paths: skills.sh, `.skill` zip, `.claude/skills/`. |
-| **[🛠 Workflows](docs/workflows.md)** | The two workflows — parallel authoring and format conversion — with diagrams. |
-| **[💼 Usage examples](docs/usage-examples.md)** | Eight realistic prompts and what the skill produces. |
-| **[🌐 Other AI platforms](docs/other-platforms.md)** | Using the skill on ChatGPT, Claude web, Claude Cowork, and Gemini — **including a no-subscription free-tier recipe that works on every platform**. |
-| **[📁 Skill structure](docs/skill-format.md)** | On-disk layout, what each `references/*.md` is for. |
-| **[📋 Compatibility](docs/compatibility.md)** | MediaWiki versions, extensions, agent hosts, skill spec. |
-| **[📡 Publishing](docs/publishing.md)** | skills.sh frontmatter, discovery, validation, packaging. |
-| **[ℹ️ Project info](docs/project-info.md)** | Versioning, contributing, license, acknowledgements. |
+| 📦 **[Installation](docs/installation.md)** | Three install paths: skills.sh, `.skill` zip, `.claude/skills/`. |
+| 🛠 **[Workflows](docs/workflows.md)** | The two workflows — parallel authoring and format conversion — with diagrams. |
+| 💼 **[Usage examples](docs/usage-examples.md)** | Eight realistic prompts and what the skill produces. |
+| 🌐 **[Other AI platforms](docs/other-platforms.md)** | Using the skill on ChatGPT, Claude web, Claude Cowork, and Gemini — **including a no-subscription free-tier recipe that works on every platform**. |
+| 📁 **[Skill structure](docs/skill-format.md)** | On-disk layout, what each `references/*.md` is for. |
+| 📋 **[Compatibility](docs/compatibility.md)** | MediaWiki versions, extensions, agent hosts, skill spec. |
+| 📡 **[Publishing](docs/publishing.md)** | skills.sh frontmatter, discovery, validation, packaging. |
+| ℹ️ **[Project info](docs/project-info.md)** | Versioning, contributing, license, acknowledgements. |
 
 ---
 
@@ -83,9 +83,9 @@ content is never altered — only the format.
 
 ## 🚀 Quick start
 
-1. **Install the skill** — see [📦 Installation](docs/installation.md).
+1. **Install the skill** — see 📦 **[Installation](docs/installation.md)**.
 2. **Invoke it** with one of the prompts in
-   [💼 Usage examples](docs/usage-examples.md).
+   💼 **[Usage examples](docs/usage-examples.md)**.
 3. **Iterate** — the skill shows the full wikitext in one block, you give
    feedback, it updates.
 
@@ -103,7 +103,7 @@ That's it. You copy-paste the wikitext into your MediaWiki editor.
 
 For other AI platforms (ChatGPT, Claude web, Gemini, Claude Cowork) — including
 a no-subscription free-tier recipe that works on every chat UI — see
-[🌐 Other AI platforms](docs/other-platforms.md).
+🌐 **[Other AI platforms](docs/other-platforms.md)**.
 
 ## 📄 License
 

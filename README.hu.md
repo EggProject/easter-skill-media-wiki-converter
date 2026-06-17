@@ -16,7 +16,7 @@
 > amely garantálja, hogy a szöveget soha nem írjuk át, csak a formátumot
 > konvertáljuk.
 
-[🇬🇧 **English version here** →](README.md)
+🇬🇧 **[English version here →](README.md)**
 
 ---
 
@@ -27,14 +27,14 @@ mappára. A hub fókuszált marad; a mélyebb részletekre kattints át.
 
 | Oldal | Mi van benne |
 |-------|--------------|
-| **[📦 Telepítés](docs/hu/installation.md)** | Három telepítési útvonal: skills.sh, `.skill` zip, `.claude/skills/`. |
-| **[🛠 Workflow-k](docs/hu/workflows.md)** | A két workflow — párhuzamos szerkesztés és formátum-konverzió — diagramokkal. |
-| **[💼 Használati példák](docs/hu/usage-examples.md)** | Nyolc valósághű prompt, és amit a skill készít belőlük. |
-| **[🌐 Más AI platformok](docs/hu/other-platforms.md)** | A skill használata ChatGPT-n, Claude weben, Claude Cowork-on és Gemini — **beleértve egy előfizetés nélküli, ingyenes receptet, amely minden platformon működik**. |
-| **[📁 A skill struktúrája](docs/hu/skill-format.md)** | Lemezen lévő elrendezés, és mire való az egyes `references/*.md`. |
-| **[📋 Kompatibilitás](docs/hu/compatibility.md)** | MediaWiki verziók, kiterjesztések, ügynök hosztok, skill spec. |
-| **[📡 Publikálás](docs/hu/publishing.md)** | skills.sh frontmatter, felfedezés, validáció, csomagolás. |
-| **[ℹ️ Projekt info](docs/hu/project-info.md)** | Verziókezelés, közreműködés, licenc, köszönetnyilvánítás. |
+| 📦 **[Telepítés](docs/hu/installation.md)** | Három telepítési útvonal: skills.sh, `.skill` zip, `.claude/skills/`. |
+| 🛠 **[Workflow-k](docs/hu/workflows.md)** | A két workflow — párhuzamos szerkesztés és formátum-konverzió — diagramokkal. |
+| 💼 **[Használati példák](docs/hu/usage-examples.md)** | Nyolc valósághű prompt, és amit a skill készít belőlük. |
+| 🌐 **[Más AI platformok](docs/hu/other-platforms.md)** | A skill használata ChatGPT-n, Claude weben, Claude Cowork-on és Gemini — **beleértve egy előfizetés nélküli, ingyenes receptet, amely minden platformon működik**. |
+| 📁 **[A skill struktúrája](docs/hu/skill-format.md)** | Lemezen lévő elrendezés, és mire való az egyes `references/*.md`. |
+| 📋 **[Kompatibilitás](docs/hu/compatibility.md)** | MediaWiki verziók, kiterjesztések, ügynök hosztok, skill spec. |
+| 📡 **[Publikálás](docs/hu/publishing.md)** | skills.sh frontmatter, felfedezés, validáció, csomagolás. |
+| ℹ️ **[Projekt info](docs/hu/project-info.md)** | Verziókezelés, közreműködés, licenc, köszönetnyilvánítás. |
 
 ---
 
@@ -86,8 +86,8 @@ formátum.
 
 ## 🚀 Gyors indulás
 
-1. **Telepítsd a skillt** — lásd [📦 Telepítés](docs/hu/installation.md).
-2. **Hívd elő** a [💼 Használati példák](docs/hu/usage-examples.md) egyik
+1. **Telepítsd a skillt** — lásd 📦 **[Telepítés](docs/hu/installation.md)**.
+2. **Hívd elő** a 💼 **[Használati példák](docs/hu/usage-examples.md)** egyik
    promptjával.
 3. **Iterálj** — a skill a teljes wikitextet egy blokkban mutatja, adsz
    visszajelzést, a skill frissíti.
@@ -106,7 +106,7 @@ Ennyi. A wikitextet bemásolod a MediaWiki szerkesztőbe.
 
 Más AI platformokhoz (ChatGPT, Claude web, Gemini, Claude Cowork) — beleértve
 az előfizetés nélküli, ingyenes szintű receptet, amely minden chat UI-n
-működik — lásd a [🌐 Más AI platformok](docs/hu/other-platforms.md) oldalt.
+működik — lásd a 🌐 **[Más AI platformok](docs/hu/other-platforms.md)** oldalt.
 
 ## 📄 Licenc
 
