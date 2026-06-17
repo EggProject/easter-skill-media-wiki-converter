@@ -5,6 +5,16 @@
 > <https://www.mediawiki.org/wiki/Skin:Timeless>,
 > <https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style>
 
+> **HARD RULE — native MediaWiki only.** Every pattern in this file uses
+> elements that ship with MediaWiki core (wikitext, `class="wikitable"`,
+> `<div>`, `<blockquote>`, `<pre>`, `<ref>`, `<gallery>`, `<details>`, magic
+> words, native inline CSS). NO `{{Note}}`/`{{Tip}}`/`{{Warning}}`/
+> `{{Caution}}`/`{{ambox}}`, NO `<templatestyles>`, NO `<syntaxhighlight>`,
+> NO `{{Infobox}}`, NO `{{Sidebar}}`, NO `{{cite}}`, NO `<mermaid>`, NO
+> `<graphviz>`, NO `<tabber>`, NO `{{#breadcrumb}}`, NO ParserFunctions /
+> Scribunto / Cite / Highlight / Mermaid / Graph / TemplateStyles / TabberNeue.
+> The exact mapping is in `references/00-native-only-mapping.md`.
+
 A "modern, clean" MediaWiki article rests on three pillars:
 
 1. **Typography and hierarchy** — clean heading structure, consistent lists, proper escaping.
@@ -108,185 +118,135 @@ conservative: 1-2 additional colors, the rest stays default.
 
 ---
 
-## 4. Highlights and boxes (your best friend)
+## 4. Highlights and boxes (your best friend) — native `<div>` only
 
-In MediaWiki, the `{{Note}}`, `{{Tip}}`, `{{Warning}}`, `{{Caution}}` templates are
-the official highlight tools. Always use these, NOT your own `<div>`s.
+> **Hard rule:** do NOT use `{{Note|...}}`, `{{Tip|...}}`, `{{Warning|...}}`,
+> `{{Caution|...}}`, `{{Important|...}}`, `{{NoteTip|...}}`, `{{ambox|...}}`,
+> `{{Notice|...}}`, `{{Outdated|...}}`, `{{Historical}}`, `{{Fixme}}`,
+> `{{Todo|...}}`, `{{Update}}`, or any `<templatestyles>`-loaded class. They
+> render as raw text on wikis where the templates / extension are not defined.
+> Use only the inline-CSS `<div>` patterns below.
 
-### Built-in message boxes (Wikipedia/MediaWiki)
-
-```wiki
-{{Note|This is an informational note.}}
-{{Tip|Try this trick.}}
-{{Warning|Be careful, this can cause data loss.}}
-{{Caution|Critical warning!}}
-{{Important|Be sure to read this.}}
-```
-
-These templates are available on Wikipedia and on mediawiki.org. If they are not
-available on the target wiki, use the `{{ambox}}` core:
+### Note (informational, blue)
 
 ```wiki
-{{ambox
-|type=notice
-|text=Simple informational box.
-}}
-```
-
-Types: `notice` (blue), `style` (yellow), `content` (yellow-orange), `warning` (orange),
-`serious` (red).
-
-### Page-level messages
-
-```wiki
-{{Notice|this page is under maintenance}}
-{{Outdated|2024-01-15}}
-{{Historical}}
-{{Fixme}}
-{{Todo|finish the table}}
-{{Update}}
-```
-
-### Highlights with TemplateStyles (custom design)
-
-If the wiki includes the TemplateStyles extension, you can create your own box:
-
-```wiki
-<templatestyles src="Modul:Highlight/styles.css" />
-
-<div class="hl-primary">
-Primary highlight
-</div>
-
-<div class="hl-warning">
-Warning
-</div>
-
-<div class="hl-success">
-Success
+<div style="background:#eaf3ff;border-left:4px solid #36c;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Megjegyzés:''' This is an informational note.
 </div>
 ```
 
-The content of `Modul:Highlight/styles.css` (example):
-```css
-.hl-primary {
-  background: #eaf3ff;
-  border-left: 4px solid #36c;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-}
-.hl-warning {
-  background: #fef6e7;
-  border-left: 4px solid #fc3;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-}
-.hl-success {
-  background: #e6f4ea;
-  border-left: 4px solid #14866d;
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin: 12px 0;
-}
+### Tip (success, green)
+
+```wiki
+<div style="background:#e6f4ea;border-left:4px solid #14866d;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Tipp:''' Try this trick.
+</div>
 ```
 
-**Note:** TemplateStyles must be installed by the MediaWiki admin. If not available,
-note it in a comment at the top of the article.
+### Warning (yellow)
+
+```wiki
+<div style="background:#fef6e7;border-left:4px solid #fc3;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Figyelem:''' Be careful, this can cause data loss.
+</div>
+```
+
+### Caution (red, critical)
+
+```wiki
+<div style="background:#fee7e6;border-left:4px solid #d33;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Vigyázat:''' Critical warning!
+</div>
+```
+
+### Important (purple)
+
+```wiki
+<div style="background:#f0e7ff;border-left:4px solid #7c3aed;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Fontos:''' Be sure to read this.
+</div>
+```
+
+### Page-level banner (top of the article)
+
+```wiki
+<div style="background:#fef6e7;border:1px solid #fc3;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Az oldal karbantartás alatt áll.'''
+</div>
+```
+
+### Outdated / historical / FIXME / TODO / UPDATE banners
+
+The same recipe, with a different background colour and a one-line message.
+See `references/00-native-only-mapping.md` section 3.2 for the full list of
+colour recipes.
+
+### Why no TemplateStyles here?
+
+TemplateStyles is an optional extension. On wikis that do not have it, the
+`<templatestyles src="...">` tag is shown as raw text and any `class="hl-..."`
+divs end up unstyled. Inline `<div style="...">` works on every MediaWiki
+install with no extension.
 
 ---
 
-## 5. Card layout
+## 5. Card layout (native wikitable only)
 
-One of the most important elements of "modern" design. In MediaWiki, cards can
-be created with a table or with TemplateStyles.
+> **Hard rule:** do NOT use TemplateStyles (`<templatestyles src="...">` +
+> `<div class="card-grid">`). The portable equivalent is a multi-column
+> wikitable with inline CSS on each cell — works on every MediaWiki install.
 
-### Simple cards using wikitable
+### Three-column cards using wikitable + inline cell colour
 
 ```wiki
-{| class="wikitable" style="width: 100%; text-align: center;"
+{| class="wikitable" style="width:100%; text-align:center;"
 |+ Our three services
 |-
-| style="width: 33%; background: #f0f7ff;" |
+| style="width:33%; background:#f0f7ff;" |
 '''Free'''
 <br />
 Available to everyone.
-| style="width: 33%; background: #e6f4ea;" |
+| style="width:33%; background:#e6f4ea;" |
 '''Fast'''
 <br />
 Set up in 5 minutes.
-| style="width: 33%; background: #fef6e7;" |
+| style="width:33%; background:#fef6e7;" |
 '''Secure'''
 <br />
 SOC 2 certified.
 |}
 ```
 
-### Cards with TemplateStyles (much nicer)
+### "Card" with icon, title, body, and CTA link
 
 ```wiki
-<templatestyles src="Modul:Cards/styles.css" />
-
-<div class="card-grid">
-  <div class="card">
-    <div class="card-title">Free</div>
-    <div class="card-body">Available to everyone.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Fast</div>
-    <div class="card-body">Set up in 5 minutes.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Secure</div>
-    <div class="card-body">SOC 2 certified.</div>
-  </div>
-</div>
+{| class="wikitable" style="width:300px; margin:8px 0;"
+|-
+| style="text-align:center; background:#f0f7ff; font-size:2em;" | 🎉
+|-
+! style="text-align:center;" | Free
+|-
+| style="text-align:center;" |
+Available to everyone.
+<br /><br />
+[https://example.com '''Sign up →''']
+|}
 ```
 
-The CSS:
-```css
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin: 16px 0;
-}
-.card {
-  background: #fff;
-  border: 1px solid #eaecf0;
-  border-radius: 8px;
-  padding: 16px 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.2s;
-}
-.card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.card-title {
-  font-size: 1.1em;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #36c;
-}
-.card-body {
-  color: #54595d;
-  line-height: 1.5;
-}
-@media (prefers-color-scheme: dark) {
-  .card { background: #101418; border-color: #2c2c2c; }
-  .card-body { color: #c8ccd1; }
-  .card-title { color: #88aaee; }
-}
-```
+### Why no `<div class="card-grid">`?
 
-**Note:** `prefers-color-scheme` support only works on Vector 2022+ and Citizen skins.
+`card-grid` requires a TemplateStyles stylesheet. The equivalent wikitable
+above renders the same look on every MediaWiki install with no extension and
+no extra page.
 
 ---
 
-## 6. Accordion / collapsible sections
+## 6. Accordion / collapsible sections (core-only)
 
-### Simple table-based accordion
+### Simple table-based accordion (`mw-collapsible`)
+
+`class="mw-collapsible"` is a core MediaWiki class — no extension required.
+It is rendered client-side by the standard MediaWiki JavaScript bundle.
 
 ```wiki
 {| class="wikitable mw-collapsible mw-collapsed"
@@ -296,7 +256,7 @@ Detailed content, hidden by default.
 |}
 ```
 
-### Detailed (mw-collapsible on any element)
+### `<div class="mw-collapsible">` (core)
 
 ```wiki
 <div class="mw-collapsible mw-collapsed">
@@ -304,166 +264,198 @@ This content is collapsed by default.
 </div>
 ```
 
-### Button-friendly accordion (details/summary)
+### Native HTML5 `<details>` / `<summary>` (MediaWiki ≥ 1.40)
 
-MediaWiki 1.40+ supports the native `<details>` tag:
+The native HTML5 tag renders identically without any extension or JS
+hookup — pure core.
 
 ```wiki
 <details>
-<summary>Details (click to expand)</summary>
-Hidden content that only appears on click.
+<summary>Step 1: Preparations</summary>
+First step details...
+</details>
+
+<details>
+<summary>Step 2: Configuration</summary>
+Second step details...
 </details>
 ```
 
-### Advanced accordion with TemplateStyles
+### Why no TemplateStyles accordion?
+
+TemplateStyles + `<details class="accordion">` requires the TemplateStyles
+extension. The `<details>` / `<summary>` native tag is identical in look and
+works on every MediaWiki install with no extension. Use it instead.
+
+---
+
+## 7. Tabs (native multi-column wikitable — no TabberNeue)
+
+> **Hard rule:** do NOT use `<tabber>` (TabberNeue extension) and do NOT use
+> TemplateStyles + JS for tabs. The portable equivalent is a multi-column
+> wikitable with one cell per "tab". On wide screens the columns sit
+> side-by-side; on narrow screens the wikitable flows vertically.
 
 ```wiki
-<templatestyles src="Modul:Accordion/styles.css" />
+{| class="wikitable"
+! style="width:33%;" | Overview
+! style="width:33%;" | Examples
+! style="width:33%;" | Limits
+|-
+| valign="top" |
+Short summary text goes here.
+* Bullet 1
+* Bullet 2
+| valign="top" |
+Example 1.
 
-<details class="accordion">
-  <summary>Step 1: Preparations</summary>
-  <div class="accordion-body">First step details...</div>
-</details>
-<details class="accordion">
-  <summary>Step 2: Configuration</summary>
-  <div class="accordion-body">Second step details...</div>
-</details>
+Example 2.
+| valign="top" |
+* Only on POSIX systems
+* Maximum 1 GB of data
+|}
+```
+
+For a stacked, one-above-the-other layout (more like a real accordion),
+use `class="mw-collapsible"` on each header row of separate wikitables.
+
+---
+
+## 8. Breadcrumbs (native wikilink chain — no `{{#breadcrumb}}`)
+
+> **Hard rule:** do NOT use `{{#breadcrumb:Home|Project|Subpage}}` (extension)
+> or `{{Breadcrumb|link1=...|link2=...}}` (custom template). Use a plain
+> wikilink chain inside a small `<div>`.
+
+```wiki
+<div style="font-size:0.9em;color:#54595d;margin-bottom:12px;">
+[[Home]] &rsaquo; [[Project]] &rsaquo; Subpage
+</div>
+```
+
+The `›` (single right-pointing angle quotation mark) is visually cleaner than
+`>` on most skins. Use `[[Page|Display text]]` to control the link label.
+
+---
+
+## 9. Navigation box / Sidebar (native wikitable)
+
+> **Hard rule:** do NOT use `{{Sidebar|title=...|content=...}}` (custom
+> template). Use a `class="wikitable"` floated to the right (or to the left)
+> with the same content.
+
+```wiki
+{| class="wikitable" style="width:240px; float:right; margin:0 0 1em 1em;"
+|+ '''Navigation'''
+|-
+|
+'''Main topics'''
+* [[First page]]
+* [[Second page]]
+* [[Third page]]
+|-
+|
+'''Sub-pages'''
+* [[Sub-page 1]]
+* [[Sub-page 2]]
+|-
+|
+'''External links'''
+* [https://example.com External source]
+|}
 ```
 
 ---
 
-## 7. Tabs (with the TabberNeue extension)
+## 10. Infobox (native wikitable — no `{{Infobox}}`)
 
-If TabberNeue is installed:
+> **Hard rule:** do NOT use `{{Infobox|title=...|image=...|label1=...}}`
+> (custom template). The portable equivalent is a `class="wikitable"` floated
+> to the right, with one row per data field.
 
 ```wiki
-<tabber>
-|-| First tab =
-This is the first tab's content.
-|-| Second tab =
-This is the second tab's content.
-|-| Third tab =
-This is the third tab's content.
-</tabber>
+{| class="wikitable" style="float:right; width:300px; margin:0 0 1em 1em;"
+|+ '''Project name'''
+|-
+| style="text-align:center;" | [[File:Logo.png|180px|center|alt=Logo]]
+|-
+! Basic data
+|-
+| '''Version:''' || 2.0
+|-
+| '''Release date:''' || 2026-01-15
+|-
+| '''Author:''' || [[Anna Kovacs]]
+|-
+| '''License:''' || [[MIT]]
+|-
+! Links
+|-
+| [[Documentation]]
+|-
+| [https://github.com/project/project GitHub]
+|-
+| [https://github.com/project/project/issues Issue tracker]
+|}
 ```
 
-### Tabs with TemplateStyles (native solution)
+The exact same recipe handles the inverse layout (full-width "card" header at
+the top of the article) — use a single-row, single-cell table with inline
+`style="background:..."`:
 
-If TabberNeue is not available, you can use a CSS-based solution, but the
-clickable tabs require JavaScript. **TabberNeue is simpler, if available.**
+```wiki
+{| style="width:100%; background:linear-gradient(135deg,#36c 0%,#447ff5 100%); color:#fff; border-radius:8px; padding:24px; margin-bottom:24px;"
+|-
+| style="text-align:center;" |
+<div style="font-size:1.5em;font-weight:600;">Article title</div>
+<div style="margin-top:8px;opacity:0.9;">Short tagline</div>
+|}
+```
 
 ---
 
-## 8. Breadcrumbs
+## 11. Code block design (native `<pre>` only)
+
+### Basic code block (`<pre>` — no syntax highlighting)
 
 ```wiki
-{{#breadcrumb:Home|Project|Subpage}}
-```
-
-or manually (if there is no breadcrumb template):
-
-```wiki
-[[Home]] > [[Project]] > Subpage
-```
-
-The `>` character can be used as a breadcrumb separator without spaces. On some
-skins (VisualEditor) it looks better if you use the `›` character.
-
----
-
-## 9. Navigation box (sidebar template)
-
-```wiki
-{{Sidebar
-|title=Name
-|content=
-[[First page]]
-[[Second page]]
-*[[Sub-page 1]]
-*[[Sub-page 2]]
-*[[Sub-page 3]]
-|content2=
-[[Third page]]
-[[Fourth page]]
-}}
-```
-
-The Sidebar template is available as `Template:Sidebar` on most wikis.
-
----
-
-## 10. Infobox
-
-The Infobox is the most characteristic "modern" MediaWiki element. The simplest version:
-
-```wiki
-{{Infobox
-|title=Project name
-|image=[[File:Logo.png|180px|center]]
-|header1=Basic data
-|label2=Version
-|data2=2.0
-|label3=Release date
-|data3=2025-01-15
-|label4=Author
-|data4=[[Anna Kovacs]]
-|label5=License
-|data5=[[MIT]]
-|header6=Links
-|data6=
-*[[Documentation]]
-*[[Source code]]
-*[[Issue tracker]]
-}}
-```
-
-Most wikis have their own Infobox template (e.g. `Template:Infobox software`,
-`Template:Infobox person`). **Always use the target wiki's own Infobox**, not
-a generic one.
-
----
-
-## 11. Code block design
-
-### Basic syntax highlighting
-
-```wiki
-<syntaxhighlight lang="python">
+<pre>
 def fibonacci(n: int) -> int:
     if n < 2:
         return n
     return fibonacci(n - 1) + fibonacci(n - 2)
-</syntaxhighlight>
+</pre>
 ```
 
-### Numbered code (with CSS)
-
-`<syntaxhighlight>` supports the `line` and `highlight` parameters:
+### Code with a filename label (native, replaces `{{Codesample|...}}`)
 
 ```wiki
-<syntaxhighlight lang="python" line start="1" highlight="2,4">
-def hello(name):
-    print(f"Hello, {name}!")  # line 2 highlighted
-    return name
-    return None  # line 4 highlighted
-</syntaxhighlight>
-```
-
-### Code with a title
-
-```wiki
-{{Codesample
-|lang=python
-|code=
+'''<code>hello.py</code>'''
+<pre>
 def hello():
     return "Hello"
-|title=hello.py
-}}
+</pre>
+```
+
+### Code with a "file header" (visual `{{Codesample|...}}` equivalent)
+
+```wiki
+{| class="wikitable" style="background:#f8f9fa;border:1px solid #eaecf0;border-radius:4px;padding:0;"
+|-
+| style="background:#eaecf0;border-bottom:1px solid #c8ccd1;padding:4px 8px;font-family:monospace;font-size:0.9em;" | hello.py
+|-
+| style="padding:12px;" |
+<pre>
+def hello():
+    return "Hello"
+</pre>
+|}
 ```
 
 ### Code + explanation (two columns)
 
-The simplest: a table with two columns.
+The simplest: a wikitable with two columns. Each cell contains a `<pre>` for
+the code and a `<p>` for the prose.
 
 ```wiki
 {| class="wikitable"
@@ -471,10 +463,10 @@ The simplest: a table with two columns.
 ! Explanation
 |-
 |
-<syntaxhighlight lang="python">
+<pre>
 def hello():
     return "Hello"
-</syntaxhighlight>
+</pre>
 |
 The <code>hello</code> function returns a simple greeting.
 |}
@@ -483,10 +475,25 @@ The <code>hello</code> function returns a simple greeting.
 ### Button (CTA) style code snippet
 
 ```wiki
-<div style="background: #f8f9fa; border: 1px solid #eaecf0; border-radius: 6px; padding: 12px 16px; font-family: monospace;">
+<div style="background:#f8f9fa; border:1px solid #eaecf0; border-radius:6px; padding:12px 16px; font-family:monospace;">
 $ npm install mediawiki-cli
 </div>
 ```
+
+### Terminal look (dark background)
+
+```wiki
+<div style="background:#1e1e1e; color:#d4d4d4; padding:12px 16px; border-radius:6px; font-family:'Courier New', monospace; margin:12px 0;">
+$ <span style="color:#4ec9b0;">npm</span> install mediawiki-cli
+</div>
+```
+
+### Why no `<syntaxhighlight>` here?
+
+`<syntaxhighlight lang="...">` requires the `SyntaxHighlight` extension.
+Plain `<pre>` renders on every MediaWiki install. If the extension is
+definitely available, you may add `<syntaxhighlight>` on top — but never
+replace the native `<pre>`.
 
 ---
 
@@ -528,56 +535,143 @@ Later mention.<ref name="smith2020" />
 <ref name="smith2020">Smith, John (2020). "Title". Journal, 12(3), 45-67.</ref>
 ```
 
-### Recommended templates
+### Recommended citation strings (manual — replaces `{{cite ...}}`)
 
-```wiki
-{{cite web|url=...|title=...|author=...|date=...}}
-{{cite book|last=...|first=...|title=...|year=...|publisher=...|isbn=...}}
-{{cite journal|last=...|first=...|title=...|journal=...|volume=...|issue=...|year=...|pages=...}}
-{{cite news|title=...|url=...|publisher=...|date=...}}
-```
+| Source type | Recommended format |
+|-------------|--------------------|
+| Web page | `[https://example.com Article title], Author, YYYY-MM-DD. Accessed YYYY-MM-DD.` |
+| Book | `Smith, John (2020). ''Book title''. Publisher. ISBN 978-...` |
+| Journal | `Smith, John (2020). "Article title". ''Journal name'', 12(3), 45-67.` |
+| News | `[https://example.com/news News title]. ''Newspaper'', YYYY-MM-DD.` |
+| Internal | `Source: Internal documentation, YYYY-MM-DD.` |
 
----
-
-## 13. Mathematical formulas
-
-MediaWiki supports TeX syntax (Math extension):
-
-```wiki
-Pythagorean theorem: <math>a^2 + b^2 = c^2</math>
-
-An equation: <math>\sum_{i=1}^{n} i = \frac{n(n+1)}{2}</math>
-```
+> The Cite extension's `{{cite web|...}}`, `{{cite book|...}}`, etc. require an
+> extension that may not be installed. Use the manual format above so the
+> citation always renders correctly on stock MediaWiki.
 
 ---
 
-## 14. Diagrams, flowcharts (Mermaid / Graphviz)
+## 13. Mathematical formulas (native HTML only)
 
-If the Mermaid extension is installed:
+> **Hard rule:** do NOT use `<math>...</math>` — that requires the Math
+> extension. Use the native HTML `<sup>` / `<sub>` tags and the
+> `class="texhtml"` wrapper if you want the same vertical alignment as
+> LaTeX. Everything renders on a stock MediaWiki install.
 
-```wiki
-<mermaid>
-graph TD
-  A[Start] --> B{Decision}
-  B -->|Yes| C[Path 1]
-  B -->|No| D[Path 2]
-  C --> E[End]
-  D --> E
-</mermaid>
-```
-
-If Graphviz is installed:
+### Inline formula
 
 ```wiki
-<graphviz>
-digraph G {
-  A -> B;
-  B -> C;
-}
-</graphviz>
+Pythagorean theorem: <span class="texhtml"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> = <i>c</i><sup>2</sup></span>
 ```
 
-**Note:** Check whether these extensions are available on the target wiki.
+### Display formula (centered, larger)
+
+```wiki
+<div class="texhtml" style="text-align:center; margin:16px 0; font-size:1.1em;">
+<i>f</i>(<i>x</i>) = <i>a</i><sub>0</sub> + &sum;<sub><i>i</i>=1</sub><sup><i>n</i></sup> <i>a<sub>i</sub></i><i>x<sup>i</sup></i>
+</div>
+```
+
+### Common mathematical entities (HTML entities)
+
+| Glyph | HTML entity |
+|-------|-------------|
+| × | `&times;` |
+| ÷ | `&divide;` |
+| ± | `&plusmn;` |
+| √ | `&radic;` |
+| ∑ | `&sum;` |
+| ∏ | `&prod;` |
+| ∫ | `&int;` |
+| ∞ | `&infin;` |
+| ≤ | `&le;` |
+| ≥ | `&ge;` |
+| ≠ | `&ne;` |
+| ≈ | `&asymp;` |
+| ° | `&deg;` |
+| π | `&pi;` |
+
+If your target wiki has the Math extension installed, you may add `<math>`
+on top for prettier formulas. Native HTML markup is the portable default.
+
+---
+
+## 14. Diagrams, flowcharts (no Mermaid, no Graphviz)
+
+> **Hard rule:** do NOT use `<mermaid>...</mermaid>` or
+> `<graphviz>...</graphviz>` — both require extensions. Use ASCII inside
+> `<pre>` (always available) or a native `<table>` box-and-line diagram
+> (full visual control with inline CSS).
+
+### ASCII diagram in `<pre>`
+
+```wiki
+<pre>
+[Start]
+   |
+   v
+{Decision: continue?}
+   |
+   +--- no --> [Stop]
+   |
+  yes
+   |
+   v
+[Step 1] --> [Step 2] --> [Done]
+</pre>
+```
+
+### Box-and-line diagram with native `<table>`
+
+```wiki
+{| style="border:none; margin: 12px auto;"
+|+ '''Workflow'''
+|-
+| style="text-align:center; padding:8px 16px; background:#eaecf0; border:1px solid #c8ccd1; border-radius:6px;" | Start
+| style="text-align:center; font-size:1.4em;" | &darr;
+| style="text-align:center; padding:8px 16px; background:#eaf3ff; border:1px solid #36c; border-radius:6px;" | Step 1
+| style="text-align:center; font-size:1.4em;" | &darr;
+| style="text-align:center; padding:8px 16px; background:#eaf3ff; border:1px solid #36c; border-radius:6px;" | Step 2
+| style="text-align:center; font-size:1.4em;" | &darr;
+| style="text-align:center; padding:8px 16px; background:#d5fdf4; border:1px solid #14866d; border-radius:6px;" | Done
+|}
+```
+
+### Decision-tree wikitable
+
+```wiki
+{| class="wikitable"
+! Step !! Action !! Outcome
+|-
+| 1 || Start process || Process running
+|-
+| 2 || Check condition || Yes / No
+|-
+| 3a || If Yes || Continue to step 4
+|-
+| 3b || If No || Abort process
+|-
+| 4 || Finalize || Done
+|}
+```
+
+### State-machine wikitable
+
+```wiki
+{| class="wikitable"
+! State !! Trigger !! Next state
+|-
+| Idle || user logs in || Authenticating
+|-
+| Authenticating || credentials valid || Logged in
+|-
+| Authenticating || credentials invalid || Error
+|-
+| Logged in || user logs out || Idle
+|}
+```
+
+These three recipes cover the vast majority of diagram needs without extensions.
 
 ---
 
@@ -590,16 +684,21 @@ Before you declare the article "done", check:
 - [ ] Does every table have a `class="wikitable"` attribute?
 - [ ] Do sortable tables have `sortable`?
 - [ ] Does every image have an `alt=` attribute?
-- [ ] Is code in `<syntaxhighlight lang="...">`, not `<pre>`?
-- [ ] Are highlights (Note, Tip, Warning) using MediaWiki's own templates?
+- [ ] Is code in `<pre>` (NOT `<syntaxhighlight>` — requires extension)?
+- [ ] Are callouts inline-CSS `<div>` (NOT `{{Note}}`, `{{Tip}}`, `{{Warning}}`)?
 - [ ] Are categories at the bottom of the page?
-- [ ] Are footnotes listed with the `<references />` tag?
-- [ ] Are there no empty sections under "== Heading =="?
-- [ ] Are there no level 1 (=) headings?
+- [ ] Are footnotes listed with the `<references />` tag (NOT `{{cite ...}}`)?
+- [ ] Is the infobox a wikitable floated right (NOT `{{Infobox|...}}`)?
+- [ ] Are breadcrumbs a wikilink chain (NOT `{{#breadcrumb}}`)?
+- [ ] Are diagrams ASCII-in-`<pre>` or `<table>` (NOT `<mermaid>`/`<graphviz>`)?
+- [ ] Are math expressions HTML `<sup>`/`<sub>` (NOT `<math>`)?
+- [ ] Are there no empty sections under `== Heading ==`?
+- [ ] Are there no level 1 (`=`) headings?
 - [ ] Do tables have a `|+` caption after `{|` when there is a title?
 - [ ] Are pipe characters escaped (`{{!}}` where needed)?
-- [ ] Are HTML entities correct (`&amp;` `&lt;` etc.)?
+- [ ] Are HTML entities correct (`&amp;`, `&lt;`, etc.)?
 - [ ] Is the mobile view readable too? (few tables, many paragraphs)
+- [ ] **No `<templatestyles>` tag anywhere in the wikitext**
 
 ---
 
@@ -620,12 +719,16 @@ default, point out that the Citizen or Vector 2022 skin would provide a better e
 
 ## 17. When NOT to use design
 
-- **If the target wiki allows templates, BUT has no TemplateStyles** — don't write
-  complex CSS, use built-in templates instead (`{{Note}}`, `{{Tip}}`).
-- **If the target wiki runs a very old MediaWiki version** — check that
-  `class="wikitable sortable"`, `<syntaxhighlight>`, `<gallery>` are supported.
-- **If the target wiki is private/intranet** — there are probably no built-in
-  templates, everything must be solved with custom templates.
+- **If the target wiki is stock MediaWiki with no extensions** — use only the
+  native toolbox (wikitext, `class="wikitable"`, `<div>`, `<blockquote>`,
+  `<pre>`, `<ref>`, `<gallery>`, `<details>`, inline CSS). NEVER fall back to
+  `{{Note}}`, `{{Tip}}`, `{{Warning}}` — those templates probably don't
+  exist on the target wiki either.
+- **If the target wiki runs an old MediaWiki version (< 1.39)** — avoid
+  `<details>` / `<summary>` (added in 1.40); use `class="mw-collapsible"`
+  on `<div>` or `<table>` instead. `<gallery>` is supported from 1.28+.
+- **If the target wiki is private/intranet** — assume only core; never rely
+  on third-party templates that may or may not be installed.
 - **If the user explicitly asks for a clean, minimalist style** — don't force
   lots of colors and boxes.
 
@@ -637,4 +740,3 @@ Sources:
 - <https://www.mediawiki.org/wiki/Skin:Citizen>
 - <https://www.mediawiki.org/wiki/Skin:Timeless>
 - <https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Layout>
-- <https://www.mediawiki.org/wiki/Extension:TemplateStyles>

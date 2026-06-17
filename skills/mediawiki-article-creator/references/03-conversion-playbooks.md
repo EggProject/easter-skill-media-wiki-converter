@@ -1,12 +1,20 @@
 # 03 — Conversion playbooks (HTML / PDF / Word / Excel / PPT → MediaWiki)
 
-> Sources: <https://www.mediawiki.org/wiki/Extension:PandocUltimateConverter>,
-> <https://www.mediawiki.org/wiki/Extension:ConvertPDF2Wiki>,
+> Sources: <https://pandoc.org/MANUAL.html>,
+> <https://en.wikipedia.org/wiki/Wikipedia:How_to_convert_a_PDF_to_Wiki_syntax>,
 > <https://stackoverflow.com/questions/2833263/convert-from-microsoft-word-to-media-wiki-markup-style>,
 > <https://openwetware.org/wiki/Converting_documents_to_mediawiki_markup>
 
 > **IMPORTANT:** This file describes the principles of conversion, it does NOT produce scripts. The actual
 > conversion is always performed manually or by an LLM, so that the design and style are preserved.
+
+> **HARD RULE — native MediaWiki only.** Every recipe below produces wikitext
+> that works on a stock MediaWiki install with NO extensions and NO custom
+> templates. NO `{{Note}}`, NO `{{Tip}}`, NO `<syntaxhighlight>`, NO
+> `{{blockquote}}`, NO `{{ambox}}`, NO `{{cite ...}}`, NO `{{Graph:Chart}}`,
+> NO `{{Forrás}}`, NO `<templatestyles>`, NO Scribunto / ParserFunctions.
+> Use inline-CSS `<div>` and `class="wikitable"` for everything. The full
+> native mapping lives in `references/00-native-only-mapping.md`.
 
 ---
 
@@ -14,10 +22,13 @@
 
 1. **NEVER modify the text.** Only the format and the visual structure are transformed.
 2. **Try to preserve design elements** — if the source contains color, boxes, tables, icons,
-   find their MediaWiki equivalents.
+   find their NATIVE MediaWiki equivalents (inline CSS on `<div>` / `<table>`,
+   `class="wikitable"`, `<blockquote>`, `<pre>`, `<ref>` + `<references />`).
 3. **Double-check is MANDATORY.** After every conversion, launch an independent agent
    (see: `references/04-verification-checklist.md`).
-4. **Source attribution.** Optionally place a `{{Forrás|...}}` template at the top of the finished article.
+4. **Source attribution.** Optionally place a `<div style="...">Forrás: ...</div>`
+   banner at the top of the finished article. NEVER use `{{Forrás|...}}` or
+   any custom attribution template — the native `<div>` works on every wiki.
 5. **Show the full article, not excerpts.** The user wants to see the entire conversion.
 
 ---
@@ -35,9 +46,16 @@
    Add `class="wikitable"`.
 5. **Links**: `<a href="...">` internal → `[[...]]`, external → `[...]`.
 6. **Images**: `<img src="...">` → `[[File:...|thumb|...]]`.
-7. **Code**: `<pre>` → `<syntaxhighlight>` (if a language is specified), or `<pre>` if not.
-8. **Quotes**: `<blockquote>` → `{{blockquote|...}}` or `<blockquote>`.
-9. **Boxes, callouts**: `<div class="note">` → `{{Note|...}}`.
+7. **Code**: `<pre>` → `<pre>` (native — keep `<pre>` as `<pre>`).
+   If the source had a `class="language-X"` on `<pre>`, drop the class.
+   NEVER use `<syntaxhighlight>` (extension required).
+8. **Quotes**: `<blockquote>` → `<blockquote>` (native — keep it native).
+   NEVER use `{{blockquote|...}}` or `{{pull quote|...}}` (custom templates).
+9. **Boxes, callouts**: `<div class="note">` → inline-CSS `<div style="...">`
+   (see `references/00-native-only-mapping.md` section 3.1). NEVER use
+   `{{Note|...}}`, `{{Tip|...}}`, `{{Warning|...}}`, `{{Caution|...}}`,
+   `{{ambox|...}}` — they are custom templates and won't exist on the
+   target wiki.
 10. **HTML entities**: `&amp;` `&lt;` `&gt;` — keep these as is (MediaWiki supports them too).
 
 #### HTML attribute → MediaWiki attribute
@@ -101,7 +119,9 @@ This report summarizes the '''Q4 2025''' results.
 
 - HTML classes may be lost if the MediaWiki skin styles them differently. Always
   replace with `class="wikitable"`.
-- Try to replace `<div>`-based layouts with tables or TemplateStyles.
+- Try to replace `<div>`-based layouts with `class="wikitable"` or native
+  inline-CSS `<div style="...">`. NEVER reach for `{{Note|Tip|Warning|Caution}}`
+  or `<templatestyles>`.
 - If the HTML contains many nested `<div>` tags, the page becomes complex. Consider
   which elements of the source are worth keeping.
 
@@ -118,9 +138,9 @@ This report summarizes the '''Q4 2025''' results.
 3. **The progress bar** is omitted; use `__TOC__` at the top of the page instead.
 4. **Instead of navigation arrows**, use section links in the text, or `[[#Next section]]`.
 5. **Images** go into `[[File:...|thumb|...]]` format.
-6. **Code** goes into `<syntaxhighlight>` format.
+6. **Code** goes into native `<pre>` format (NEVER `<syntaxhighlight>`).
 7. **Fragments** (content that appears step by step in reveal.js) → "Collapsible sections"
-   (`mw-collapsible`) or "Details" (`<details>`).
+   (`mw-collapsible`) or native `<details>` / `<summary>` (MediaWiki ≥ 1.40).
 
 #### Example: reveal.js slide → Wiki section
 
@@ -149,7 +169,7 @@ __TOC__
 
 This presentation is about MediaWiki.
 
-{| class="mw-collapsible mw-collapsed"
+{| class="wikitable mw-collapsible mw-collapsed"
 ! Topics (click to expand)
 |-
 * On wiki syntax
@@ -159,10 +179,10 @@ This presentation is about MediaWiki.
 
 == 2. Wiki syntax ==
 
-<syntaxhighlight lang="python">
+<pre>
 def hello():
     return "Hello"
-</syntaxhighlight>
+</pre>
 ```
 
 #### Tips
@@ -170,6 +190,7 @@ def hello():
 - The "fragment" (step-by-step) effect is lost — but `mw-collapsible` preserves the
   "interactivity" (it appears on click).
 - Collect slide-level footnotes at the end of the article, not per slide.
+  Use native `<ref>` + `<references />` (NEVER `{{cite ...}}`).
 - If the slideshow contains a "thank you" or "next topic" slide, convert it to a
   "Related articles" section.
 
@@ -202,7 +223,8 @@ def hello():
 3. **Tables:** if the extracted text contains recognizable tables (tabs, alignment),
    try to cast them into wikitable format. If not, ask the user.
 4. **Images:** the user uploads the extracted images to the wiki and provides the file names.
-5. **Footnotes:** collect the PDF's footnotes at the end of the article in `<ref>` format.
+5. **Footnotes:** collect the PDF's footnotes at the end of the article in `<ref>` /
+   `<references />` format (NEVER `{{cite web|...}}` etc.).
 6. **Page numbers** should be omitted — MediaWiki has no concept of a "page".
 
 #### Example: text extracted from a PDF → Wiki
@@ -258,6 +280,7 @@ This report summarizes the Q4 2025 results.
 > and produce wikitext from it.
 
 1. **Pandoc**: `pandoc -f docx -t mediawiki -o output.wiki input.docx`
+   (Pandoc is a tool that converts documents; it is NOT a MediaWiki extension.)
 2. **Manual**: Word "Save As" → "Plain Text", but formatting is lost.
 
 #### Generating wikitext from Word
@@ -275,7 +298,8 @@ Typical issues with Word/Pandoc output:
 3. Normalize lists to `*` (unordered) and `#` (ordered) format.
 4. Convert tables to `class="wikitable"` format.
 5. Replace base64 images with `[[File:...]]` references (the user uploads the images).
-6. Convert footnotes to `<ref>` format, and add `<references />` at the end.
+6. Convert footnotes to native `<ref>` format, and add `<references />` at the end
+   (NEVER `{{cite ...}}`).
 7. Remove Word-specific formatting (justification, indentation).
 
 #### Example: Pandoc output → Wiki
@@ -344,8 +368,12 @@ This is a paragraph.
 3. **Cell types** (number, date, currency) are lost — they end up as text.
 4. **The result of formulas** is included, not the formula itself.
 5. **Charts** are NOT included — this must be reported to the user.
+   The portable replacement is an ASCII diagram in `<pre>` or a `<table>`
+   box-and-line diagram (see `references/02-design-patterns.md` section 14).
+   NEVER use `{{Graph:Chart}}` (extension).
 6. **Conditional formatting** is NOT included.
-7. **Cell colors** are NOT included (wikitable does not support cell colors natively).
+7. **Cell colors** are NOT included (wikitable does not support cell colors natively —
+   use inline `style="background:..."` per cell if you really need them).
 8. **Merged cells** are sometimes lost — verify the output.
 
 #### Recommended format
@@ -366,7 +394,8 @@ This is a paragraph.
 
 - Format numbers according to the local convention (space as thousands separator, decimal comma).
 - If the Excel table is too wide (>6 columns), consider splitting it into several smaller tables.
-- Charts can be substituted with the `{{Graph:Chart}}` template (where available), or described in the table.
+- For chart data, prefer an ASCII diagram in `<pre>` or a `<table>` box diagram —
+  never `{{Graph:Chart}}`.
 
 ---
 
@@ -384,9 +413,12 @@ This is a paragraph.
 1. **Each slide → a section (`==` heading).** The slide's title becomes the section's title.
 2. **Text boxes within a slide** become the section's content (lists or paragraphs).
 3. **Images** go into `[[File:...|thumb|...]]` format.
-4. **Charts** are NOT included — they must be described or omitted.
+4. **Charts** are NOT included — they must be described, replaced by an ASCII
+   diagram in `<pre>`, or omitted. NEVER `{{Graph:Chart}}`.
 5. **Animations, transitions** are lost.
-6. **Speaker notes** can optionally go under the section in `{{Note|...}}` format.
+6. **Speaker notes** can optionally go under the section in a native
+   `<div style="...">...</div>` aside (see the "note" callout recipe in
+   `references/00-native-only-mapping.md` section 3.1). NEVER use `{{Note|...}}`.
 
 #### Example: PPTX slide → Wiki section
 
@@ -440,9 +472,13 @@ Slide 2: "Results"
 ### During the conversion
 
 - [ ] The text is kept VERBATIM, only the format changes.
-- [ ] Use MediaWiki's own templates (`{{Note}}`, `{{Tip}}`, etc.), not custom HTML.
-- [ ] Tables use `class="wikitable"`.
-- [ ] Code uses `<syntaxhighlight lang="...">`.
+- [ ] Use ONLY native MediaWiki elements — inline-CSS `<div>` for callouts,
+      `class="wikitable"` for tables, `<pre>` for code, `<ref>` +
+      `<references />` for footnotes, `<blockquote>` for quotes, native
+      wikilink chain for breadcrumbs. NEVER `{{Note}}`, NEVER
+      `<syntaxhighlight>`, NEVER `<templatestyles>`.
+- [ ] Tables use `class="wikitable"` (and `sortable` if applicable).
+- [ ] Code uses native `<pre>`.
 - [ ] Images are in `[[File:...|thumb|alt=...]]` format.
 - [ ] Categories go at the bottom of the page.
 
@@ -450,7 +486,7 @@ Slide 2: "Results"
 
 - [ ] Launch an independent agent based on `references/04-verification-checklist.md`.
 - [ ] Process the agent's report.
-- [ ] Fix the issues found.
+- [ ] Fix the issues found — including section 6 of the checklist (native-only enforcement).
 - [ ] Show the final wikitext to the user.
 
 ---
@@ -465,16 +501,15 @@ There are situations where you should consult the user before converting:
 - **If the source contains many images** — the user must upload the images before
   the wikitext can appear on the wiki.
 - **If the source contains many special formatting elements** (custom CSS, JS, scripts) — these
-  will be lost during conversion.
+  will be lost during conversion. The native `<div>` + inline CSS handles the common
+  visual cases; everything else must be omitted and reported.
 - **If the source is copyrighted** — warn the user that MediaWiki content is generally
   under a free license (CC BY-SA).
 
 ---
 
 Sources:
-- <https://www.mediawiki.org/wiki/Extension:PandocUltimateConverter>
-- <https://www.mediawiki.org/wiki/Extension:ConvertPDF2Wiki>
-- <https://www.mediawiki.org/wiki/Extension:Html2Wiki>
+- <https://pandoc.org/MANUAL.html>
+- <https://en.wikipedia.org/wiki/Wikipedia:How_to_convert_a_PDF_to_Wiki_syntax>
 - <https://stackoverflow.com/questions/2833263/convert-from-microsoft-word-to-media-wiki-markup-style>
 - <https://openwetware.org/wiki/Converting_documents_to_mediawiki_markup>
-- <https://pandoc.org/MANUAL.html>

@@ -5,12 +5,20 @@
 > <https://www.mediawiki.org/wiki/Help:Formatting>,
 > <https://www.mediawiki.org/wiki/Help:Tables>,
 > <https://en.wikipedia.org/wiki/Help:Gallery_tag>,
-> <https://www.mediawiki.org/wiki/Help:Extension:ParserFunctions>
+> <https://www.mediawiki.org/wiki/Help:Magic_words>
 
-This file is the complete MediaWiki syntax reference. If the user asks any formatting
-question, or if any MediaWiki element must be used in the output, **work from here**.
-Do not try to remember it from your own head — always be consistent with MediaWiki's
-official syntax.
+This file is the complete **native-only** MediaWiki syntax reference. It uses
+**only** the elements that ship with MediaWiki core: wikitext, `class="wikitable"`,
+`<div>`, `<blockquote>`, `<pre>`, `<ref>`, `<gallery>`, `<details>`, and core magic
+words. It does NOT show `<templatestyles>`, `<syntaxhighlight>`,
+`<mermaid>`, `<tabber>`, ParserFunctions, Scribunto, Cite, Highlight, Mermaid,
+Graph, TabberNeue, or any custom template call (`{{Note|...}}`, `{{Infobox|...}}`,
+`{{cite ...}}`, etc.). For the explicit native replacement table see
+`references/00-native-only-mapping.md`.
+
+If the user asks any formatting question, or if any MediaWiki element must be
+used in the output, **work from here**. Do not try to remember it from your own
+head — always be consistent with MediaWiki's official native syntax.
 
 ---
 
@@ -450,49 +458,58 @@ The <code>git status</code> command shows the changes.
 Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy.
 Replace the <var>username</var> variable.
 
-### Code block with syntax highlighting (recommended)
+### Code block (native `<pre>` — no syntax highlighting, no extension)
 
 ```wiki
-<syntaxhighlight lang="python">
+<pre>
 def hello(name: str) -> str:
     return f"Hello, {name}!"
 
 print(hello("World"))
-</syntaxhighlight>
-```
-
-Supported languages: `python`, `javascript`, `java`, `c`, `cpp`, `csharp`, `go`, `rust`,
-`ruby`, `php`, `html`, `css`, `scss`, `xml`, `json`, `yaml`, `sql`, `bash`, `sh`, `powershell`,
-`markdown`, `diff`, `dockerfile`, `nginx`, `apache`, `ini`, `toml`, `lua`, `perl`, `r`,
-`matlab`, `scala`, `kotlin`, `swift`, `typescript`, `jsx`, `tsx`, `vue`, `graphql` and
-hundreds more (see: Pygments lexers).
-
-### Inline syntax highlighting
-
-```wiki
-Use the <syntaxhighlight lang="css" inline>color: red</syntaxhighlight> rule.
-```
-
-### Simple code block (no highlighting)
-
-```wiki
-<pre>
-this
-  preserves
-    the indentation
 </pre>
 ```
 
-### Keyboard shortcut
+> **Why no `<syntaxhighlight>`?** The `<syntaxhighlight>` tag is provided by
+> the `SyntaxHighlight` (formerly `Geshi`) extension. It is widespread but
+> NOT a core MediaWiki element. To stay portable, use plain `<pre>`. If the
+> target wiki definitely has the `SyntaxHighlight` extension, you may add it
+> on top of the native version — but never replace the native version.
+
+### Code block with a filename label (native, replaces `{{Codesample|...}}`)
 
 ```wiki
-To save, press {{Key press|Ctrl|S}}.
+'''<code>hello.py</code>'''
+<pre>
+def hello():
+    return "Hello"
+</pre>
 ```
 
-### Button
+Or with a styled "file header":
 
 ```wiki
-Click the {{Button|Save}} button.
+{| class="wikitable" style="background:#f8f9fa;border:1px solid #eaecf0;border-radius:4px;padding:0;"
+|-
+| style="background:#eaecf0;border-bottom:1px solid #c8ccd1;padding:4px 8px;font-family:monospace;font-size:0.9em;" | hello.py
+|-
+| style="padding:12px;" |
+<pre>
+def hello():
+    return "Hello"
+</pre>
+|}
+```
+
+### Keyboard shortcut (native, replaces `{{Key press|...}}`)
+
+```wiki
+To save, press <kbd>Ctrl</kbd>+<kbd>S</kbd>.
+```
+
+### Button (native, replaces `{{Button|...}}`)
+
+```wiki
+Click the <kbd>Save</kbd> button.
 ```
 
 ### Abbreviation
@@ -501,14 +518,16 @@ Click the {{Button|Save}} button.
 <abbr title="JavaScript">JS</abbr> is a popular language.
 ```
 
-### Code sample window (with external filename)
+### Inline code
 
 ```wiki
-{{Codesample
-|lang=python
-|code=print("Hello, World!")
-|title=hello.py
-}}
+Use the <code>color: red</code> rule.
+```
+
+### Variable
+
+```wiki
+Replace the <var>username</var> variable.
 ```
 
 ---
@@ -521,7 +540,7 @@ Click the {{Button|Save}} button.
 He said: "I'll be back soon".
 ```
 
-### Block-level quote (its own block)
+### Block-level quote (native `<blockquote>`)
 
 ```wiki
 <blockquote>
@@ -530,164 +549,204 @@ In MediaWiki the <blockquote> tag can be used for this.
 </blockquote>
 ```
 
-### Templated quote
+### Quote with attribution (native, replaces `{{blockquote|...}}`, `{{pull quote|...}}`, `{{Quotation|...}}`)
 
 ```wiki
-{{blockquote
-|text=Life is what happens when you're busy making other plans.
-|sign=John Lennon
-|source=
-|width=
-}}
+<blockquote style="border-left:4px solid #c8ccd1;padding:8px 16px;margin:12px 0;color:#54595d;">
+Life is what happens when you're busy making other plans.
+<div style="text-align:right;margin-top:8px;font-size:0.9em;">— John Lennon</div>
+</blockquote>
 ```
 
-### Other quote templates
-
-```wiki
-{{pull quote|text}}
-{{Quotation|text|source}}
-```
+> **Note:** do NOT use the Wikipedia/mediawiki.org-only quote templates
+> (`{{blockquote|...}}`, `{{pull quote|...}}`, `{{Quotation|...}}`). They render
+> as raw text on wikis where they are not defined. The native `<blockquote>`
+> works on every MediaWiki install.
 
 ---
 
-## 10. Highlights, boxes, messages
+## 10. Highlights, boxes, messages (native `<div>` only)
 
-### MediaWiki's built-in highlight templates
+> **Hard rule:** do NOT use `{{Note|...}}`, `{{Tip|...}}`, `{{Warning|...}}`,
+> `{{Caution|...}}`, `{{Important|...}}`, `{{ambox|...}}`, `{{Notice|...}}`,
+> `{{Outdated|...}}`, `{{Historical}}`, `{{Fixme}}`, `{{Todo|...}}`,
+> `{{Update}}`, or any TemplateStyles class. They render as raw text on wikis
+> where the templates are not defined. Use only the native `<div style="...">`
+> patterns below.
 
-```wiki
-{{Note|text}}
-{{Tip|text}}
-{{Warning|text}}
-{{Caution|text}}
-{{Important|text}}
-{{NoteTip|text}}
-```
-
-### Generic message-box (MediaWiki core)
+### Callout box: Note (informational, blue)
 
 ```wiki
-{{ambox
-|type=notice
-|text=Informational message
-|image=[[File:Icon-info.svg|40px]]
-}}
-```
-
-Types: `notice`, `style`, `content`, `warning`, `serious`. The appearance depends on the `type` value.
-
-### Page-level messages (top of the page)
-
-```wiki
-{{Notice|this page is under maintenance}}
-{{Outdated|2024-01-01}}
-{{Historical}}
-{{Fixme}}
-{{Todo|finish the table}}
-{{Update}}
-```
-
-### Hatnote (link to another page within the page)
-
-```wiki
-{{Main|Main article}}
-{{See also|See also|Related article}}
-{{For|other uses|See|Other meaning}}
-```
-
-### Highlight with TemplateStyles (custom box)
-
-```wiki
-<div class="my-highlight-box">
-This is a custom-styled box whose appearance is defined by TemplateStyles.
+<div style="background:#eaf3ff;border-left:4px solid #36c;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Megjegyzés:''' Ez egy információs doboz.
 </div>
 ```
 
-To use TemplateStyles, the page (or the containing template) must reference it:
+### Callout box: Tip (success, green)
+
 ```wiki
-<templatestyles src="Module:Highlight box/styles.css" />
+<div style="background:#e6f4ea;border-left:4px solid #14866d;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Tipp:''' Próbáld ki ezt a trükköt.
+</div>
 ```
+
+### Callout box: Warning (yellow)
+
+```wiki
+<div style="background:#fef6e7;border-left:4px solid #fc3;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Figyelem:''' Legyél óvatos, ez adatvesztést okozhat.
+</div>
+```
+
+### Callout box: Caution (red, critical)
+
+```wiki
+<div style="background:#fee7e6;border-left:4px solid #d33;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Vigyázat:''' Kritikus figyelmeztetés!
+</div>
+```
+
+### Callout box: Important (purple)
+
+```wiki
+<div style="background:#f0e7ff;border-left:4px solid #7c3aed;padding:12px 16px;margin:12px 0;border-radius:4px;color:#202122;">
+'''Fontos:''' Mindenképpen olvasd el.
+</div>
+```
+
+### Page-level banner: under maintenance (yellow)
+
+Place at the very top of the article, before the first heading:
+
+```wiki
+<div style="background:#fef6e7;border:1px solid #fc3;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Az oldal karbantartás alatt áll.'''
+</div>
+```
+
+### Page-level banner: outdated (red)
+
+```wiki
+<div style="background:#fee7e6;border:1px solid #d33;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Elavult tartalom.''' A cikk 2024-01-01 előtti információkat tartalmaz.
+</div>
+```
+
+### Page-level banner: historical (gray)
+
+```wiki
+<div style="background:#eaecf0;border:1px solid #54595d;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Historikus dokumentum.''' Csak archív célokat szolgál.
+</div>
+```
+
+### Page-level banner: needs fixing (red)
+
+```wiki
+<div style="background:#fee7e6;border:1px solid #d33;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Javítandó:''' a cikk hiányos.
+</div>
+```
+
+### Page-level banner: TODO (yellow)
+
+```wiki
+<div style="background:#fef6e7;border:1px solid #fc3;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Teendő:''' fejezd be a táblázatot.
+</div>
+```
+
+### Page-level banner: needs update (blue)
+
+```wiki
+<div style="background:#eaf3ff;border:1px solid #36c;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;color:#202122;">
+'''Frissítésre szorul.'''
+</div>
+```
+
+### Hatnote (native, replaces `{{Main|...}}`, `{{See also|...}}`, `{{For|...}}`)
+
+```wiki
+<div style="font-size:0.9em;color:#54595d;margin-bottom:12px;">
+Fő cikk: [[A téma részletesen]]. Lásd még: [[Kapcsolódó cikk]].
+</div>
+```
+
+### Why no TemplateStyles here?
+
+TemplateStyles is an optional extension. On wikis that do not have it, the
+`<templatestyles src="...">` tag is shown as raw text and any `class="hl-..."`
+divs end up unstyled. Inline `<div style="...">` works on every MediaWiki
+install with no extension.
 
 ---
 
-## 11. Templates
+## 11. Templates (native magic words only)
 
-### Calling a template
+> **Hard rule:** do NOT use custom template calls like `{{Note|...}}`,
+> `{{Infobox|...}}`, `{{cite web|...}}`, `{{Forrás|...}}`, `{{Source|...}}`,
+> `{{#breadcrumb:...}}`, `{{#invoke:Module:...}}`, `{{#if:...}}`,
+> `{{#switch:...}}`, etc. They need either a custom template installed on
+> the target wiki, or the ParserFunctions / Scribunto extension. Stick to
+> the **native core magic words** below.
+
+### Calling a native magic word
 
 ```wiki
-{{template name}}
-{{template name|parameter=value}}
-{{template name|first|2|third}}
-{{template name|param1=value1|param2=value2}}
+{{PAGENAME}}       → the current page name
+{{NAMESPACE}}      → the current namespace
+{{FULLPAGENAME}}   → namespace + page name
+{{TALKPAGENAME}}   → the talk page name
+{{REVISIONID}}     → the current revision ID
+{{REVISIONUSER}}   → the editor's username
+{{SITENAME}}       → the wiki name
+{{SERVER}}         → the wiki's server URL
+{{localurl:page}}  → the page's relative URL
+{{fullurl:page}}   → the page's full URL
+{{CURRENTYEAR}}    → 2026
+{{CURRENTMONTH}}   → 06
+{{CURRENTDAY}}     → 18
+{{CURRENTTIME}}    → 14:25
+{{NUMBEROFARTICLES}} — statistics
+{{NUMBEROFPAGES}}   — statistics
+{{NUMBEROFUSERS}}   — statistics
+{{ns:1}}            — namespace ID → namespace name
 ```
 
-### Conditional include
+### Conditional include (native parameter default)
 
 ```wiki
 {{template name|{{{parameter|default}}}}}
 ```
 
-### Recursion / circular reference
+This works ONLY if a template exists; for portable articles prefer hard-coded
+text and let the editor restructure later.
 
-```wiki
-{{#invoke:Module:Foo|function_name|arg1|arg2}}
-```
+### Why no `{{#invoke:Module:Foo|...}}`?
 
-### Most common useful templates
-
-- `{{PAGENAME}}` — the current page name
-- `{{NAMESPACE}}` — the current namespace
-- `{{FULLPAGENAME}}` — namespace + page name
-- `{{TALKPAGENAME}}` — the talk page name
-- `{{REVISIONID}}` — the current revision ID
-- `{{REVISIONUSER}}` — the editor's username
-- `{{SITENAME}}` — the wiki name
-- `{{SERVER}}` — the wiki's server URL
-- `{{localurl:page name}}` — the page's relative URL
-- `{{fullurl:page name}}` — the page's full URL
-- `{{CURRENTYEAR}}`, `{{CURRENTMONTH}}`, `{{CURRENTDAY}}`, `{{CURRENTTIME}}` — date
-- `{{NUMBEROFARTICLES}}`, `{{NUMBEROFPAGES}}`, `{{NUMBEROFUSERS}}` — statistics
-- `{{ns:1}}` — namespace ID → namespace name
-- `{{#time: Y-m-d }}` — formatted date (see below)
+Scribunto (the Lua module engine) is an extension. On wikis without it, the
+call renders as raw text. Use plain wikitext + native tables + native lists
+instead.
 
 ---
 
-## 12. Parser functions (ParserFunctions extension)
+## 12. Core string and encoding functions (no extension needed)
 
 ```wiki
-{{#if: string | yes | no}}
-{{#ifeq: 01 | 1 | equal | not equal}}      → "equal" (numeric comparison)
-{{#ifexist: Help:Foo | exists | no}}       → "exists" if the page exists
-{{#ifexpr: 1 > 0 | yes | no}}               → "yes"
-{{#expr: 1 + 1 }}                           → 2
-{{#time: Y-m-d }}                           → 2026-06-16
-{{#time: c }}                               → ISO 8601
-{{#switch: baz | foo = Foo | baz = Baz }}   → "Baz"
-{{#rel2abs: ../quok | Help:Foo/bar/baz }}   → Help:Foo/bar/quok
-{{#titleparts: Talk:Foo/bar/baz | 2 }}      → Talk:Foo/bar
+{{lc: AbC}}                   → "abc"       (lowercase)
+{{uc: AbC}}                   → "ABC"       (uppercase)
+{{lcfirst: AbC}}              → "abC"       (lowercase first char)
+{{ucfirst: abc}}              → "Abc"       (uppercase first char)
+{{anchorencode: AbC dEf}}     → "AbC_dEf"   (URL anchor)
+{{urlencode: hello world}}    → "hello+world" (URL encoding)
 ```
 
-String functions (optional, only if `$wgPFEnableStringFunctions = true`):
-```wiki
-{{#len: string }}
-{{#pos: string | search }}
-{{#rpos: string | search }}
-{{#sub: string | start | length }}
-{{#count: string | search }}
-{{#replace: string | search | replacement }}
-{{#explode: string | delim | index }}
-{{#urldecode: encoded }}
-{{#urlencode: text }}
-```
-
-Core functions (available without an extension):
-```wiki
-{{lc: AbC}}                                 → "abc"
-{{uc: AbC}}                                 → "ABC"
-{{lcfirst: AbC}}                            → "abC"
-{{ucfirst: abc}}                            → "Abc"
-{{anchorencode: AbC dEf}}                   → "AbC_dEf"
-{{urlencode: hello world}}                  → "hello+world"
-```
+> **`{{#if:}}`, `{{#ifeq:}}`, `{{#ifexist:}}`, `{{#ifexpr:}}`, `{{#expr:}}`,
+> `{{#time:}}`, `{{#switch:}}`, `{{#len:}}`, `{{#pos:}}`, `{{#sub:}}`,
+> `{{#replace:}}` etc.** are provided by the **ParserFunctions** extension.
+> They are present on most public wikis, but NOT in stock MediaWiki core. If
+> you need conditional rendering, prefer plain wikitext with categories, or
+> pre-compute the value outside the article.
 
 ---
 
@@ -873,39 +932,57 @@ The media player is automatic if the extension is supported (ogg, ogv, webm, mp3
 
 ## 18. Automatic listing of categories, pages, and images
 
-```wiki
-{{CategoryTree|Category name|depth=3}}     → category tree
-{{Pages with prefix|Page prefix}}            → list of pages by prefix
-{{PAGESINCAT:Category name}}                 → number of pages in the category
-{{PAGESINCATEGORY:Category name}}            → same as above
-{{FORMATNUM:1234567}}                          → formatted number
-```
+> **Hard rule:** do NOT use `{{CategoryTree|...}}`, `{{#categorytree:...}}`,
+> `{{Pages with prefix|...}}` — these need the **CategoryTree** extension.
+> The core-only equivalents are listed below.
 
-### File listing in a category
+### Native core: gallery of files
 
 ```wiki
-<gallery>
-File:Image1.jpg
-File:Image2.jpg
+<gallery caption="File gallery" widths="200" heights="150">
+File:Image1.jpg|Description 1
+File:Image2.jpg|Description 2
 </gallery>
 ```
 
-or all files in a category (with certain extensions):
+### Native core: list files in a category via Special page link
+
+The core native option is a **plain link** to the category's file listing:
+
 ```wiki
-{{#categorytree:Files|showcount|depth=2}}
+A kategória képeit lásd: [[:Category:Files]].
 ```
+
+If the **CategoryTree** extension is available, you may also write
+`{{CategoryTree|Files|depth=2}}` — but always provide the native link as the
+fallback.
+
+### Counting pages in a category (native, simple)
+
+Use the core magic word:
+
+```wiki
+{{PAGESINCAT:Files}}
+```
+
+(`{{PAGESINCATEGORY:Files}}` is an alias.)
 
 ---
 
 ## 19. Recursive templates and content inclusion
 
 ```wiki
-{{:Another page}}              → transclude another page's content
-{{Another page}}               → include a template
+{{:Another page}}              → transclude another page's content (native core)
+{{Another page}}               → include a template (NEEDS the template to exist)
 {{subst:Another page}}         → substitute the template's text on save
 {{safesubst:Another page}}     → same, but safer
 {{msgnw:Another page}}         → include without template, as raw wiki text
 ```
+
+> **Caveat:** `{{Another page}}` only renders if `Template:Another page`
+> exists on the target wiki. For portable articles, prefer plain transclusion
+> (`{{:Another page}}`) of real pages, or copy the relevant content into the
+> article body.
 
 ### Transclusion (embed a page's content)
 
@@ -934,16 +1011,55 @@ This box floats to the right.
 </div>
 ```
 
-### Multiple columns (with extension or CSS)
+### Multiple columns (native, with a wikitable)
+
+The portable equivalent of `column-count: 2` is a simple wikitable — every
+MediaWiki install renders `class="wikitable"`, and the columns reflow
+naturally on narrow screens.
 
 ```wiki
-<div style="column-count: 2; column-gap: 20px;">
+{| class="wikitable"
+! style="width:50%;" | Bal oszlop
+! style="width:50%;" | Jobb oszlop
+|-
+|
+Első oszlop tartalma.
+Több bekezdés is lehet.
+
+* Listaelem 1
+* Listaelem 2
+|
+Második oszlop tartalma.
+
+* Listaelem A
+* Listaelem B
+|}
+```
+
+### Three or more columns (native, wikitable)
+
+```wiki
+{| class="wikitable"
+! style="width:33%;" | Első
+! style="width:33%;" | Második
+! style="width:33%;" | Harmadik
+|-
+| A | B | C
+|}
+```
+
+### "Column-count CSS" is not portable
+
+`column-count: 2` and similar multi-column CSS work on most skins, but the
+`column-count` property is not guaranteed to be applied to `<div>` content in
+every MediaWiki configuration. Use the wikitable above instead.
 First column content.
 Second column content.
 </div>
 ```
 
-or with the `{{div col}}` / `{{div col end}}` template (where available):
+or with the `{{div col}}` / `{{div col end}}` template (extension; prefer
+the wikitable above for portability):
 ```wiki
 {{div col|2}}
 First column
@@ -952,34 +1068,35 @@ First column
 
 ---
 
-## 21. Extensions worth knowing (only if installed)
+## 21. Extensions to AVOID in portable articles
 
-| Extension | Function |
-|--------------|---------|
-| SyntaxHighlight | Code highlighting (Pygments) |
-| TemplateStyles | Custom CSS per page |
-| ParserFunctions | `{{#if}}`, `{{#switch}}`, `{{#expr}}`, etc. |
-| Scribunto | Lua modules (Module: namespace) |
-| Variables | `{{#var:}}` local variables |
-| Cargo | Structured data storage |
-| VisualEditor | WYSIWYG editor |
-| TabberNeue | Tabbed interface |
-| MultimediaViewer | Image zoom |
-| PageImages | Page's lead image |
-| InputBox | Quick page-creation box |
-| Replace Text | Replace text in a category |
-| CategoryTree | Category tree |
-| CollapsibleVector | Collapsible sections |
-| Header Tabs | Header tabs |
-| Page Forms | Form-based editing |
-| Semantic MediaWiki | Semantic data |
-| Math | LaTeX formulas (`<math>`) |
-| Poem | Poetry formatting |
-| Arrays | Array handling |
-| Maps | Map embed |
+> This skill is **native-only**. The extensions below are useful in their
+> own right, but you must NOT add them to the article unless the user
+> explicitly confirms they are installed on the target wiki (and even then,
+> keep a native fallback in the same article).
 
-**Note:** Always verify whether the given extension is installed on the target wiki.
-If not, use a native MediaWiki alternative, or notify the user.
+| Extension | Why we avoid it by default | Native replacement |
+|-----------|---------------------------|--------------------|
+| `SyntaxHighlight` (`<syntaxhighlight>`) | not core | `<pre>` |
+| `TemplateStyles` (`<templatestyles>`) | not core | inline `<div style="...">` |
+| `ParserFunctions` (`{{#if}}`, `{{#switch}}`, `{{#expr}}`, `{{#time}}`) | not core | native magic words + plain wikitext |
+| `Scribunto` (`{{#invoke:Module:...}}`) | not core | wikitable / list / table |
+| `Cite` (`{{cite web}}`, `{{cite book}}`, etc.) | not core | `<ref>[url "title"]</ref>` |
+| `Highlight` (`<source>`) | not core | `<pre>` |
+| `Mermaid` (`<mermaid>`) | not core | wikitable step list / ASCII art in `<pre>` |
+| `Graphviz` (`<graphviz>`) | not core | wikitable step list / ASCII art in `<pre>` |
+| `Graph` (`{{Graph:Chart}}`) | not core | `class="wikitable sortable"` |
+| `TabberNeue` (`<tabber>`) | not core | multi-column wikitable |
+| `Variables` (`{{#var:}}`) | not core | plain wikitext |
+| `CategoryTree` (`{{CategoryTree}}`) | not core | `[[:Category:Name]]` link |
+| `Page Forms` (`{{#forminput:...}}`) | not core | regular edit form |
+| `Semantic MediaWiki` (`[[Prop::Value]]`, `{{#ask:...}}`) | not core | plain wikitext |
+| `Cargo` (`{{#cargo_store:...}}`, `{{#cargo_query:...}}`) | not core | wikitable |
+| `InputBox` (`<inputbox>`) | not core | regular form link |
+| `CollapsibleVector` / `Header Tabs` | not core | `class="mw-collapsible"` / `<details>` |
+| `Math` (`<math>`) | widely available but still an extension | plain wikitext describing the formula |
+| `Poem` (`<poem>`) | not core | plain `<br />` separation |
+| `Arrays`, `Maps` | not core | wikitable / external link |
 
 ---
 
@@ -1001,7 +1118,7 @@ Example: in a table, if a cell's text contains a `|` character:
 |}
 ```
 
-### Deactivating HTML5
+### `<templatedata>` (core, but rarely needed for portable articles)
 
 ```wiki
 <templatedata>
@@ -1014,13 +1131,20 @@ Example: in a table, if a cell's text contains a `|` character:
 </templatedata>
 ```
 
+`<templatedata>` is a core feature for documenting template parameters and
+shows up in VisualEditor. It is NOT a styling tool — it has no rendering
+effect on the page itself.
+
 ---
 
-## 23. Example: complete, modern article
+## 23. Example: complete, native-only article
 
 ```wiki
-__NOTOC__{{short description|Modern, clean MediaWiki article example}}
-{{#time: Y | now }}.
+__NOTOC__
+
+<div style="font-size:0.9em;color:#54595d;margin-bottom:12px;">
+This article provides a brief overview of the topic.
+</div>
 
 == Overview ==
 
@@ -1047,12 +1171,12 @@ and is discussed in detail in the following sections.
 
 == Example code ==
 
-<syntaxhighlight lang="python">
+<pre>
 def hello(name: str) -> str:
     return f"Hello, {name}!"
 
 print(hello("World"))
-</syntaxhighlight>
+</pre>
 
 == Example gallery ==
 
@@ -1073,8 +1197,9 @@ File:Example.jpg|Image 3
 
 ## 24. Best practices (TL;DR)
 
-1. **Always use `<syntaxhighlight>` for code blocks**, not `<pre>`. Syntax highlighting
-   greatly improves readability.
+1. **Use `<pre>` for code blocks** (native, no extension). Only switch to
+   `<syntaxhighlight>` if the user confirms the `SyntaxHighlight` extension
+   is available — and even then, keep `<pre>` as a fallback.
 2. **Always use `class="wikitable"` for tables**, unless there is a specific design reason.
 3. **Use sortable tables when the data is sortable** (`class="wikitable sortable"`).
 4. **`mode="packed-hover"` is the most attractive gallery** in most cases.
@@ -1084,8 +1209,16 @@ File:Example.jpg|Image 3
 8. **When linking, prefer the `[[Target|Label]]` format** if the target page's name is long.
 9. **The `__TOC__` magic word** is rarely needed (by default it appears after the
    level-4 heading), but if you need it, place it at the top of the page.
-10. **You rarely need to type the `<templatestyles>` tag directly** — templates
-    usually include it, and the editor loads it automatically.
+10. **Do NOT use `<templatestyles>` at all** — use inline `<div style="...">`
+    instead. Inline CSS works on every MediaWiki install with no extension.
+11. **Use `<div style="...">` for callout boxes** (Note, Tip, Warning, Caution,
+    Important). The exact color recipes are in
+    `references/00-native-only-mapping.md` section 3.1.
+12. **Use a wikitable floated right for infoboxes**; a plain wikitable for sidebars.
+13. **Use `<blockquote>` for quotes**; do NOT use `{{blockquote|...}}` or
+    `{{pull quote|...}}`.
+14. **Use `<ref>...</ref>` + `<references />` for citations**; do NOT use
+    `{{cite web|...}}` and family.
 
 ---
 
@@ -1097,5 +1230,5 @@ Sources:
 - <https://en.wikipedia.org/wiki/Help:Cheatsheet>
 - <https://en.wikipedia.org/wiki/Help:Advanced_table_features>
 - <https://en.wikipedia.org/wiki/Help:Gallery_tag>
-- <https://www.mediawiki.org/wiki/Help:Extension:ParserFunctions>
 - <https://www.mediawiki.org/wiki/Help:Magic_words>
+- `references/00-native-only-mapping.md` (in this skill)
